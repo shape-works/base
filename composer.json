@@ -7,7 +7,7 @@
 			"package": {
 				"name": "shape-works/base",
 				"version": "1.0",
-				"type": "package",
+				"type": "wordpress-muplugin",
 				"source": {
 					"url": "git@github.com:shape-works/base.git",
 					"type": "git",
