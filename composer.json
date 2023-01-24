@@ -20,13 +20,8 @@
 		"php": ">=7.4"
 	},
 	"extra": {
-        "installer-paths": {
-            "wp-content/mu-plugins/base/": [
-                "shape-works/base"
-            ],
-            "wp-content/plugins/base/": [
-                "type:wordpress-plugin"
-            ]
+		"installer-paths": {
+			"wp-content/mu-plugins/base": ["shape-works/base"]
         }
 	}
 }
