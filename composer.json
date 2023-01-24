@@ -18,5 +18,15 @@
 	],
 	"require": {
 		"php": ">=7.4"
+	},
+	"extra": {
+        "installer-paths": {
+            "wp-content/mu-plugins/base/": [
+                "wpackagist-plugin/base"
+            ],
+            "wp-content/plugins/base/": [
+                "type:wordpress-plugin"
+            ]
+        }
 	}
 }
