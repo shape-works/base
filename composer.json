@@ -21,7 +21,7 @@
 	},
 	"extra": {
 		"installer-paths": {
-			"wp-content/mu-plugins/base": ["shape-works/base"]
+			"wp-content/mu-plugins": ["shape-works/base"]
         }
 	}
 }
