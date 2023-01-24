@@ -20,8 +20,9 @@
 		"php": ">=7.4"
 	},
 	"extra": {
-		"installer-paths": {
-			"wp-content/mu-plugins": ["shape-works/base"]
+        "installer-paths": {
+			"web/app/mu-plugins": ["shape-works/base"],
+			"web/app/mu-plugins/": ["shape-works/base"]
         }
 	}
 }
