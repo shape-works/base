@@ -21,8 +21,10 @@
 	},
 	"extra": {
         "installer-paths": {
-			"web/app/mu-plugins": ["shape-works/base"],
-			"web/app/mu-plugins/": ["shape-works/base"]
+			"web/app/mu-plugins/shape-works/base": [
+				"type:wordpress-muplugin",
+				"shape-works/base"
+			]
         }
 	}
 }
