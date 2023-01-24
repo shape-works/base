@@ -3,7 +3,7 @@
 	"description": "Shape Works - Package of base files for WordPress Theme",
 	"repositories": [
 		{
-			"type": "wordpress-muplugin",
+			"type": "package",
 			"package": {
 				"name": "shape-works/base",
 				"version": "1.0",
