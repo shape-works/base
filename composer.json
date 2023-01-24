@@ -1,0 +1,22 @@
+{
+	"name": "shape-works/base",    
+	"description": "Shape Works - Package of base files for WordPress Theme",
+	"repositories": [
+		{
+			"type": "package",
+			"package": {
+				"name": "shape-works/base",
+				"version": "1.0",
+				"type": "package",
+				"source": {
+					"url": "git@github.com:shape-works/base.git",
+					"type": "git",
+					"reference": "main"
+				}
+			}
+		}
+	],
+	"require": {
+		"php": ">=7.4"
+	}
+}
