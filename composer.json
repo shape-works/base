@@ -24,7 +24,11 @@
 			"web/app/mu-plugins/shape-works/base": [
 				"type:wordpress-muplugin",
 				"shape-works/base"
-			]
+			],
+			"web/app/mu-plugins/shape-works": [
+				"shape-works/base"
+			],
+			"web/app/mu-plugins": ["shape-works/base"]
         }
 	}
 }
