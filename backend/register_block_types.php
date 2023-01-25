@@ -30,7 +30,7 @@ add_action( 'init', function() {
 				$allowed_block_types[$post_type][] = $block_json['name'];
 			}
 		} else {//Default: Any Post Type
-			$allowed_block_types['all'] = $block_json['name'];
+			$allowed_block_types['all'][] = $block_json['name'];
 		}
 
 		$block_folder_path = str_replace('/block.json', '', $block_json_path);
