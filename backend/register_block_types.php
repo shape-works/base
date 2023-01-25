@@ -16,7 +16,6 @@ add_action( 'init', function() {
 	global $allowed_block_types;
 	$allowed_block_types = [];
 
-	
 	foreach ( get_block_paths() as $block_json_path) {
 
 		register_block_type( $block_json_path );
