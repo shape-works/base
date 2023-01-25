@@ -26,7 +26,6 @@ add_action( 'init', function() {
 			true
 		);
 
-	
 		if( isset($block_json['postTypes']) ) {//Specific Post Type
 			foreach( $block_json['postTypes'] as $post_type ) {
 				$allowed_block_types[$post_type][] = $block_json['name'];
