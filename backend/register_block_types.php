@@ -33,6 +33,7 @@ add_action( 'init', function() {
 			$allowed_block_types['all'][] = $block_json['name'];
 		}
 
+		
 		$block_folder_path = str_replace('/block.json', '', $block_json_path);
 		
 		if ( file_exists( $block_folder_path . '/init.php' ) ) {
