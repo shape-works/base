@@ -103,14 +103,13 @@ function replace_image_url_with_resized_url_and_add_srcset(
 		
 		// add path + options for a 2x scale image url
 		$resized_image_url_2x = add_resizing_settings_to_image_path($image_url, $width*2, $height*2, $crop);
-		$resized_image_url_small = add_resizing_settings_to_image_path($image_url, $width*0.75, $height*0.75, $crop);
-		$resized_image_url_micro = add_resizing_settings_to_image_path($image_url, $width*0.50, $height*0.50, $crop);
+		$resized_image_url_small = add_resizing_settings_to_image_path($image_url, round($width*0.75), round($height*0.75), $crop);
+		$resized_image_url_micro = add_resizing_settings_to_image_path($image_url, round($width*0.50), round($height*0.50), $crop);
 
-		$srcset = $resized_image_url_micro . ' ' . 
-			$width * 0.50 . 'w, ' . $resized_image_url_small . ' ' . 
-			$width * 0.75 . 'w, ' . $resized_image_url . ' ' . 
-			$width . 'w, ' . $resized_image_url_2x . ' ' . 
-			$width * 2 . 'w';
+		$srcset =  $resized_image_url_micro . ' ' .  round($width * 0.50) . 'w,'; 
+		$srcset .= $resized_image_url_small . ' ' .  round($width * 0.75) . 'w,';  
+		$srcset .= $resized_image_url . ' ' . $width . 'w,'; 
+		$srcset .= $resized_image_url_2x . ' ' . $width * 2 . 'w';
 
 		if(!$crop){
 			if($image_original_width > $image_original_height){
@@ -153,15 +152,14 @@ function get_image_with_tag(
 	$image_original_height = $image_infos['width'];
 
 	$resized_image_url = add_resizing_settings_to_image_path( $image_url, $width, $height, $crop );
-	$resized_image_url_2x = add_resizing_settings_to_image_path( $image_url, $width*2, $height*2, $crop );
-	$resized_image_url_small = add_resizing_settings_to_image_path($image_url, $width*0.75, $height*0.75, $crop);
-	$resized_image_url_micro = add_resizing_settings_to_image_path($image_url, $width*0.50, $height*0.50, $crop);
+	$resized_image_url_2x = add_resizing_settings_to_image_path( $image_url, $width * 2, $height * 2, $crop );
+	$resized_image_url_small = add_resizing_settings_to_image_path($image_url, round($width * 0.75), round($height * 0.75), $crop);
+	$resized_image_url_micro = add_resizing_settings_to_image_path($image_url, round($width * 0.50), round($height * 0.50), $crop);
 
-	$srcset = $resized_image_url_micro . ' ' . 
-		$width * 0.50 . 'w, ' . $resized_image_url_small . ' ' . 
-		$width * 0.75 . 'w, ' . $resized_image_url . ' ' . 
-		$width . 'w, ' . $resized_image_url_2x . ' ' . 
-		$width * 2 . 'w';
+	$srcset =  $resized_image_url_micro . ' ' .  round($width * 0.50) . 'w,'; 
+	$srcset .= $resized_image_url_small . ' ' .  round($width * 0.75) . 'w,';  
+	$srcset .= $resized_image_url . ' ' . $width . 'w,'; 
+	$srcset .= $resized_image_url_2x . ' ' . $width * 2 . 'w';
 	 
 
 	if(!$crop){
