@@ -95,12 +95,15 @@ add_action('admin_bar_init', function() {
 	remove_action('wp_head', '_admin_bar_bump_cb');
 });
 
-/**
- * Remove unused css dashicons from front-end
- */
-add_action( 'wp_print_styles',     'my_deregister_styles', 100 );
-function my_deregister_styles()    { 
-   wp_deregister_style( 'dashicons' ); 
+ 
+/*
+* Remove dashicons in frontend for unauthenticated users
+*/
+add_action( 'wp_enqueue_scripts', 'bs_dequeue_dashicons' );
+function bs_dequeue_dashicons() {
+	if ( ! is_user_logged_in() ) {
+		wp_deregister_style( 'dashicons' );
+	}
 }
 
 /**
