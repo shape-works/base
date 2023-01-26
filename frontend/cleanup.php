@@ -94,3 +94,21 @@ add_filter( 'body_class', function ( $classes ) {
 add_action('admin_bar_init', function() {
 	remove_action('wp_head', '_admin_bar_bump_cb');
 });
+
+/**
+ * Remove unused css dashicons from front-end
+ */
+add_action( 'wp_print_styles',     'my_deregister_styles', 100 );
+function my_deregister_styles()    { 
+   wp_deregister_style( 'dashicons' ); 
+}
+
+/**
+ * Remove console log notice jQuery Migrate
+ */
+function remove_jquery_migrate_notice() {
+    $m= $GLOBALS['wp_scripts']->registered['jquery-migrate'];
+    $m->extra['before'][]='temp_jm_logconsole = window.console.log; window.console.log=null;';
+    $m->extra['after'][]='window.console.log=temp_jm_logconsole;';
+}
+add_action( 'init', 'remove_jquery_migrate_notice', 5 );
