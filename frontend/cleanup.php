@@ -99,10 +99,18 @@ add_action('admin_bar_init', function() {
 /*
 * Remove dashicons in frontend for unauthenticated users
 */
-add_action( 'wp_enqueue_scripts', 'bs_dequeue_dashicons' );
-function bs_dequeue_dashicons() {
+add_action('wp_enqueue_scripts', function() {
 	if ( ! is_user_logged_in() ) {
 		wp_deregister_style( 'dashicons' );
 	}
-}
+});
 
+
+/*
+* Remove dashicons in frontend for unauthenticated users
+*/
+add_action('init', function() {
+	$m= $GLOBALS['wp_scripts']->registered['jquery-migrate'];
+    $m->extra['before'][]='temp_jm_logconsole = window.console.log; window.console.log=null;';
+    $m->extra['after'][]='window.console.log=temp_jm_logconsole;';
+});
