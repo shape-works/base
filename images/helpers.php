@@ -90,8 +90,8 @@ function replace_image_url_with_resized_url_and_add_srcset(
 	$attachment_id  = attachment_url_to_postid( $image_url );
 	$image_alt = get_post_meta( $attachment_id, '_wp_attachment_image_alt', true);
 	$image_infos = wp_get_attachment_metadata($attachment_id);
-	$image_original_width = $image_infos['height'];
-	$image_original_height = $image_infos['width'];
+	$image_original_width = $image_infos['width'];
+	$image_original_height = $image_infos['height'];
 
 	
 	if($image_url){
@@ -113,9 +113,9 @@ function replace_image_url_with_resized_url_and_add_srcset(
 
 		if(!$crop){
 			if($image_original_width > $image_original_height){
-				$height = ($image_original_width/$image_original_height) * $image_original_width;
+				$height = ($image_original_height/$image_original_width) * $width;
 			} else {
-				$width = ($image_original_height/$image_original_width) * $image_original_height;
+				$width = ($image_original_width/$image_original_height) * $height;
 			}
 		}
 
@@ -148,8 +148,8 @@ function get_image_with_tag(
 	$image_url = wp_get_attachment_url( $attachment_id );
 	$image_alt = get_post_meta( $attachment_id, '_wp_attachment_image_alt', true );
 	$image_infos = wp_get_attachment_metadata($attachment_id);
-	$image_original_width = $image_infos['height'];
-	$image_original_height = $image_infos['width'];
+	$image_original_width = $image_infos['width'];
+	$image_original_height = $image_infos['height'];
 
 	$resized_image_url = add_resizing_settings_to_image_path( $image_url, $width, $height, $crop );
 	$resized_image_url_2x = add_resizing_settings_to_image_path( $image_url, $width * 2, $height * 2, $crop );
@@ -162,9 +162,11 @@ function get_image_with_tag(
 	$srcset .= $resized_image_url_2x . ' ' . $width * 2 . 'w';
 	 
 
+
+
 	if(!$crop){
 		if($image_original_width > $image_original_height){
-			$height = ($image_original_width/$image_original_height) * $image_original_width;
+			$height = ($image_original_height/$image_original_width) * $width;
 		} else {
 			$width = ($image_original_height/$image_original_width) * $image_original_height;
 		}
