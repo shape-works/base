@@ -83,50 +83,17 @@ function replace_image_url_with_resized_url_and_add_srcset(
 	string $width, 
 	string $height, 
 	bool $crop = true, 
-	string $attributeName = 'imageUrl'
+	string $attributeName = 'imageUrl',
+	string $sizes = ''
 ) {
-	
 	$image_url = isset($attributes[$attributeName]) ? $attributes[$attributeName] : false;
 	$attachment_id  = attachment_url_to_postid( $image_url );
-	$image_alt = get_post_meta( $attachment_id, '_wp_attachment_image_alt', true);
-	$image_infos = wp_get_attachment_metadata($attachment_id);
-	$image_original_width = $image_infos['width'];
-	$image_original_height = $image_infos['height'];
-	
-
 	
 	if($image_url){
-		// add path + options to image url
-		$resized_image_url = add_resizing_settings_to_image_path($image_url, $width, $height, $crop);
-		
 		// find the src url and replace it with resized url
 		$pattern = '~src="' . $image_url . '"~';
-		
-		// add path + options for a 2x scale image url
-		$resized_image_url_2x = add_resizing_settings_to_image_path($image_url, $width*2, $height*2, $crop);
-		$resized_image_url_small = add_resizing_settings_to_image_path($image_url, round($width*0.75), round($height*0.75), $crop);
-		$resized_image_url_micro = add_resizing_settings_to_image_path($image_url, round($width*0.50), round($height*0.50), $crop);
 
-		$srcset =  $resized_image_url_micro . ' ' .  round($width * 0.50) . 'w,'; 
-		$srcset .= $resized_image_url_small . ' ' .  round($width * 0.75) . 'w,';  
-		$srcset .= $resized_image_url . ' ' . $width . 'w,'; 
-		$srcset .= $resized_image_url_2x . ' ' . $width * 2 . 'w';
-
-		if(!$crop){
-			if($image_original_width > $image_original_height){
-				$height = ($image_original_height/$image_original_width) * $width;
-			} else {
-				$width = ($image_original_width/$image_original_height) * $height;
-			}
-		}
-
-		// compose opening img tag with srcset markup
-		$img_with_srcset_attribute = 'src="' . $resized_image_url.'" 
-									  srcset="'.$srcset.'" 
-									  width="'.$width.'"
-									  height="'.$height.'"
-									  alt="' . $image_alt. '"
-									  loading="lazy"';
+		$img_with_srcset_attribute = get_image_attributes($attachment_id, $width, $height, '', $crop, $sizes);
 
 		$content = preg_replace($pattern, $img_with_srcset_attribute, $content);
 
@@ -139,7 +106,7 @@ function replace_image_url_with_resized_url_and_add_srcset(
 /** 
  * Post thumbnail return with alt tag and srcset
  */
-function get_image_with_tag(
+function get_image_attributes(
 	int $attachment_id = null,
 	int $width, 
 	int $height,
@@ -162,9 +129,6 @@ function get_image_with_tag(
 	$srcset .= $resized_image_url_small . ' ' .  round($width * 0.75) . 'w,';  
 	$srcset .= $resized_image_url . ' ' . $width . 'w,'; 
 	$srcset .= $resized_image_url_2x . ' ' . $width * 2 . 'w';
-	 
-
-
 
 	if(!$crop){
 		if($image_original_width > $image_original_height){
@@ -173,23 +137,16 @@ function get_image_with_tag(
 			$width = ($image_original_height/$image_original_width) * $image_original_height;
 		}
 	}
-
-	?>
-	<img
-		src="<?= $image_url ?>"
-		srcset="<?= $srcset; ?>"
-		width="<?= $width ?>"
-		height="<?= $height ?>"
-		alt="<?= $image_alt ?>"
-		loading="lazy"
-		<?= $sizes ? 'sizes="'.$sizes.'"' : '' ?>
-		<?php
-		if( !empty($class) ) {
-			?>
-			class="<?= $class ?>"
-			<?php
-		}
-		?>
-	/>
-	<?php
+	
+	$image_attributes = '
+		src="'. $resized_image_url .'" 
+		srcset="'. $srcset .'"
+		width="'.$width.'"
+		height="'.$height.'"
+		alt="'.$image_alt.'"
+		loading="lazy"';
+	$sizes ? $image_attributes .= 'sizes="'.$sizes.'"' : '';
+	$class ? $image_attributes .= 'class="'.$class.'"' : ''; 
+	 
+	return $image_attributes;
 }
