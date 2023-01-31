@@ -92,6 +92,7 @@ function replace_image_url_with_resized_url_and_add_srcset(
 	$image_infos = wp_get_attachment_metadata($attachment_id);
 	$image_original_width = $image_infos['width'];
 	$image_original_height = $image_infos['height'];
+	
 
 	
 	if($image_url){
@@ -143,7 +144,8 @@ function get_image_with_tag(
 	int $width, 
 	int $height,
 	string $class = '', 
-	bool $crop = true
+	bool $crop = true,
+	string $sizes = ''
 ){
 	$image_url = wp_get_attachment_url( $attachment_id );
 	$image_alt = get_post_meta( $attachment_id, '_wp_attachment_image_alt', true );
@@ -181,6 +183,7 @@ function get_image_with_tag(
 		height="<?= $height ?>"
 		alt="<?= $image_alt ?>"
 		loading="lazy"
+		<?= $sizes ? 'sizes="'.$sizes.'"' : '' ?>
 		<?php
 		if( !empty($class) ) {
 			?>
