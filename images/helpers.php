@@ -173,7 +173,6 @@ function get_image_with_tag(
 			$width = ($image_original_height/$image_original_width) * $image_original_height;
 		}
 	}
-	
 
 	?>
 	<img
