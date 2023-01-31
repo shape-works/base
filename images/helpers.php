@@ -49,7 +49,6 @@ function paws_get_cropped_image_by_id( $data ) {
 	return $posts[0]->post_title;
 }
 
-
 /** 
  * Add path + options to image url 
  */
