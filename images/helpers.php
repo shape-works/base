@@ -94,7 +94,6 @@ function replace_image_url_with_resized_url_and_add_srcset(
 		$pattern = '~src="' . $image_url . '"~';
 
 		$img_with_srcset_attribute = get_image_attributes($attachment_id, $width, $height, '', $crop, $sizes);
-
 		$content = preg_replace($pattern, $img_with_srcset_attribute, $content);
 
 		return $content;
