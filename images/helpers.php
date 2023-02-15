@@ -113,39 +113,41 @@ function get_image_attributes(
 	bool $crop = true,
 	string $sizes = ''
 ){
-	$image_url = wp_get_attachment_url( $attachment_id );
-	$image_alt = get_post_meta( $attachment_id, '_wp_attachment_image_alt', true );
-	$image_infos = wp_get_attachment_metadata($attachment_id);
-	$image_original_width = $image_infos['width'];
-	$image_original_height = $image_infos['height'];
+	if($attachment_id){
+		$image_url = wp_get_attachment_url( $attachment_id );
+		$image_alt = get_post_meta( $attachment_id, '_wp_attachment_image_alt', true );
+		$image_infos = wp_get_attachment_metadata($attachment_id);
+		$image_original_width = $image_infos['width'];
+		$image_original_height = $image_infos['height'];
 
-	$resized_image_url = add_resizing_settings_to_image_path( $image_url, $width, $height, $crop );
-	$resized_image_url_2x = add_resizing_settings_to_image_path( $image_url, $width * 2, $height * 2, $crop );
-	$resized_image_url_small = add_resizing_settings_to_image_path($image_url, round($width * 0.75), round($height * 0.75), $crop);
-	$resized_image_url_micro = add_resizing_settings_to_image_path($image_url, round($width * 0.50), round($height * 0.50), $crop);
+		$resized_image_url = add_resizing_settings_to_image_path( $image_url, $width, $height, $crop );
+		$resized_image_url_2x = add_resizing_settings_to_image_path( $image_url, $width * 2, $height * 2, $crop );
+		$resized_image_url_small = add_resizing_settings_to_image_path($image_url, round($width * 0.75), round($height * 0.75), $crop);
+		$resized_image_url_micro = add_resizing_settings_to_image_path($image_url, round($width * 0.50), round($height * 0.50), $crop);
 
-	$srcset =  $resized_image_url_micro . ' ' .  round($width * 0.50) . 'w,'; 
-	$srcset .= $resized_image_url_small . ' ' .  round($width * 0.75) . 'w,';  
-	$srcset .= $resized_image_url . ' ' . $width . 'w,'; 
-	$srcset .= $resized_image_url_2x . ' ' . $width * 2 . 'w';
+		$srcset =  $resized_image_url_micro . ' ' .  round($width * 0.50) . 'w,'; 
+		$srcset .= $resized_image_url_small . ' ' .  round($width * 0.75) . 'w,';  
+		$srcset .= $resized_image_url . ' ' . $width . 'w,'; 
+		$srcset .= $resized_image_url_2x . ' ' . $width * 2 . 'w';
 
-	if(!$crop){
-		if($image_original_width > $image_original_height){
-			$height = ($image_original_height/$image_original_width) * $width;
-		} else {
-			$width = ($image_original_height/$image_original_width) * $image_original_height;
+		if(!$crop){
+			if($image_original_width > $image_original_height){
+				$height = ($image_original_height/$image_original_width) * $width;
+			} else {
+				$width = ($image_original_height/$image_original_width) * $image_original_height;
+			}
 		}
+		
+		$image_attributes = '
+			src="'. $resized_image_url .'" 
+			srcset="'. $srcset .'"
+			width="'.$width.'"
+			height="'.$height.'"
+			alt="'.$image_alt.'"
+			loading="lazy"';
+		$sizes ? $image_attributes .= 'sizes="'.$sizes.'"' : '';
+		$class ? $image_attributes .= 'class="'.$class.'"' : ''; 
+		
+		return $image_attributes;
 	}
-	
-	$image_attributes = '
-		src="'. $resized_image_url .'" 
-		srcset="'. $srcset .'"
-		width="'.$width.'"
-		height="'.$height.'"
-		alt="'.$image_alt.'"
-		loading="lazy"';
-	$sizes ? $image_attributes .= 'sizes="'.$sizes.'"' : '';
-	$class ? $image_attributes .= 'class="'.$class.'"' : ''; 
-	 
-	return $image_attributes;
 }
