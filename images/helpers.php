@@ -89,7 +89,7 @@ function replace_image_url_with_resized_url_and_add_srcset(
 	$image_url = isset($attributes[$attributeName]) ? $attributes[$attributeName] : false;
 	$attachment_id  = attachment_url_to_postid( $image_url );
 	
-	if($image_url){
+	if($image_url && $attachment_id){
 		// find the src url and replace it with resized url
 		$pattern = '~src="' . $image_url . '"~';
 
