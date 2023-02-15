@@ -52,6 +52,7 @@ function paws_get_cropped_image_by_id( $data ) {
 /** 
  * Add path + options to image url 
  */
+
 function add_resizing_settings_to_image_path($url, $width, $height, $crop) {
 
 	$ext = pathinfo($url, PATHINFO_EXTENSION);// get file extension
