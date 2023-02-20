@@ -7,7 +7,6 @@ defined('ABSPATH') or die("No direct access");
  */
 add_filter( 'big_image_size_threshold', '__return_false' );
 
-
 // This will remove the default image sizes medium and large. 
 add_filter( 'intermediate_image_sizes_advanced', function ( $sizes ) {
 	unset( $sizes['medium']);
