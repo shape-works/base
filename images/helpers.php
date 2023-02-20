@@ -83,17 +83,24 @@ function replace_image_url_with_resized_url_and_add_srcset(
 	string $width, 
 	string $height, 
 	bool $crop = true, 
-	string $attributeName = 'imageUrl',
+	string $attributeName = 'imageObject',
 	string $sizes = ''
 ) {
-	$image_url = isset($attributes[$attributeName]) ? $attributes[$attributeName] : false;
-	$attachment_id  = attachment_url_to_postid( $image_url );
+
+	if(array_key_exists($attributeName, $attributes)){ 
+		$image_url = $attributes[$attributeName]['url'];
+		$attachment_id = $attributes[$attributeName]['id'];
+	} else {//Fallback from previous version using imageUrlAttribute
+		$image_url = isset($attributes[$attributeName]) ? $attributes[$attributeName] : false;
+		$attachment_id  = attachment_url_to_postid( $image_url );
+	}
 	
 	if($image_url && $attachment_id){
 		// find the src url and replace it with resized url
 		$pattern = '~src="' . $image_url . '"~';
 
 		$img_with_srcset_attribute = get_image_attributes($attachment_id, $width, $height, '', $crop, $sizes);
+
 		$content = preg_replace($pattern, $img_with_srcset_attribute, $content);
 
 		return $content;
