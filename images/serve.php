@@ -25,7 +25,7 @@ add_action( 'init', function () {
 		foreach ($options_string_array as $pair) {
 			list($key, $value) = explode("=", $pair);
 			// create array of the key/value pairs
-			$options_key_value_array[$key] = $value;
+			array_key_exists($key, $options_key_value_array) ? $options_key_value_array[$key] = $value : '';
 		}
 
 		// re-add "/app/uploads/" to the image url (minus "/images/width=3000...etc/")
@@ -39,15 +39,15 @@ add_action( 'init', function () {
 		$image_id = attachment_url_to_postid($original_image_url);
 		
 		// get width, height & crop values
-		$width = $options_key_value_array['width'];
-		$height = $options_key_value_array['height'];
-		$crop = $options_key_value_array['crop'] == '1' ? true : false;
+		$width = array_key_exists('width', $options_key_value_array) ? $options_key_value_array['width'] : 0;
+		$height = array_key_exists('height', $options_key_value_array) ? $options_key_value_array['height'] : 0;
+		$crop = array_key_exists('crop', $options_key_value_array) && $options_key_value_array['crop'] == '1' ? true : false;
 		
 		// run function that uses Fly to get or generate resized image
 		$fly_image = fly_get_attachment_image_src($image_id, array( $width, $height ), $crop);
 
 		// get Fly image url
-		$fly_image_url = $fly_image['src'];
+		$fly_image_url = array_key_exists('src', $fly_image) ? $fly_image['src'] : '';
 
 		// turn Fly image url into associative array (scheme, host, path, query)
 		$fly_image_url_parsed = parse_url($fly_image_url);
