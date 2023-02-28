@@ -5,5 +5,4 @@ if (!function_exists('custom_login_redirect')) {
 	function custom_login_redirect (){
 		return admin_url().'/edit.php?post_type=page';
 	}
-	
 }
