@@ -1,7 +1,6 @@
 <?php
 defined('ABSPATH') or die("No direct access");
 
-
 /**
  * Remove unnecessary tags from head
  */
