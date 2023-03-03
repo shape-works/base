@@ -1,8 +1,10 @@
 <?php
-if (!function_exists('custom_login_redirect')) {
-	add_filter( 'login_redirect', 'custom_login_redirect', 10, 3 );
+//Redirect to Page on login
+add_filter( 'login_redirect', function(){
+	return admin_url().'/edit.php?post_type=page';
+}, 10, 3 );
 
-	function custom_login_redirect (){
-		return admin_url().'/edit.php?post_type=page';
-	}
-}
+//Redirect to Page when reaching dashboard
+add_action('load-index.php',function(){
+	wp_redirect(admin_url('edit.php?post_type=page'));
+});
