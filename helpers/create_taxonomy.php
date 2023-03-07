@@ -16,7 +16,6 @@ function create_taxonomy(
 		'description' => '',
 	]
 ): void {
-
 	if (empty($slug)) {
 		$slug = str_replace(' ', '-', $singular_name);
 	}
