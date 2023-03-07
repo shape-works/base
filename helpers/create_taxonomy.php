@@ -23,7 +23,7 @@ function create_taxonomy(
 
 	if(empty($rewrite)) {
 		$rewrite = [
-			'slug' => $name
+			'slug' => $slug
 		];
 	}
 
