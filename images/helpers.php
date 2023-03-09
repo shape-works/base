@@ -126,7 +126,6 @@ function get_image_attributes(
 		$image_infos = wp_get_attachment_metadata($attachment_id);
 
 		if($image_infos){
-		
 			$image_original_width = $image_infos['width'];
 			$image_original_height = $image_infos['height'];
 
