@@ -1,7 +1,7 @@
 <?php
 //Redirect to Page on login
 add_filter( 'login_redirect', function(){
-	return admin_url().'/edit.php?post_type=page';
+	return admin_url().'edit.php?post_type=page';
 }, 10, 3 );
 
 
