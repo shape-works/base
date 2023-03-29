@@ -25,8 +25,7 @@ add_action( 'init', function () {
 		foreach ($options_string_array as $pair) {
 			list($key, $value) = explode("=", $pair);
 			// create array of the key/value pairs
-			array_key_exists($key, $options_key_value_array) ? '' :
-			$options_key_value_array[$key] = $value;
+			array_key_exists($key, $options_key_value_array) ? '' : $options_key_value_array[$key] = $value;
 		}
 
 		// re-add "/app/uploads/" to the image url (minus "/images/width=3000...etc/")
