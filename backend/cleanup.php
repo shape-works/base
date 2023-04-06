@@ -74,3 +74,11 @@ add_filter( 'login_head', function() {
  * Remove 'Templates' full-site editing menu from Gutenberg sidebar
  */
 remove_theme_support( 'block-templates' );
+
+
+// Hide dashboard update notifications for all users
+function hide_update_dashboard() {
+	remove_action( 'admin_notices', 'update_nag', 3 );
+}
+	
+add_action('admin_menu','hide_update_dashboard');
