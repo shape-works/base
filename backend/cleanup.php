@@ -82,3 +82,7 @@ function hide_update_dashboard() {
 }
 	
 add_action('admin_menu','hide_update_dashboard');
+
+
+// disable ACF's own custom post type + taxonomy feature
+add_filter( 'acf/settings/enable_post_types', '__return_false' );
