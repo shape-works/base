@@ -1,4 +1,4 @@
-# Shape Works base plugin.
+# Shape Works base plugin
 
 Our MU plugin which handles default stuff that all projects share.
 
@@ -14,4 +14,4 @@ To update the plugin, open terminal in the root directory of the repo and use th
 4. `git push origin v2.11`
 5. Also push on GH Desktop app
 
-Now you can run `composer update shape-dot-works/base` from your **shape-dot-works** installation.
+Now you can run `composer update` from your **shape-dot-works** installation.
