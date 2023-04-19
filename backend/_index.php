@@ -13,3 +13,4 @@ require_once(dirname(__FILE__).'/register_block_types.php');
 require_once(dirname(__FILE__).'/force_admin_email.php');
 require_once(dirname(__FILE__).'/force_permalink_structure.php');
 require_once(dirname(__FILE__).'/login_redirect.php');
+require_once(dirname(__FILE__).'/custom_login.php');
