@@ -47,8 +47,8 @@ function custom_wp_loaded() {
 	$login_slug = custom_login_slug();
 	$login_slug = '/'.$login_slug;
 	
-	if ( is_admin() && ! is_user_logged_in() && ! defined( 'DOING_AJAX' ) ) {
-		//Trying to reach wp-admin
+	if ( is_admin() && ! is_user_logged_in() && ! defined( 'DOING_AJAX' ) || $req_uri === '/login' || $req_uri === '/login/' ) {
+		//Trying to reach [/wp-admin] OR [/login]
 		wp_safe_redirect( '/' );
 		die();
 	}
@@ -61,11 +61,14 @@ function custom_wp_loaded() {
 			global $error, $interim_login, $action, $user_login;
 			@require_once ABSPATH . 'wp-login.php';
 			die();
+		} else if(str_contains($req_uri, 'logout')) {//Log out
+			@require_once ABSPATH . 'wp-login.php';
+			die();
 		} else {//Logged in -> Redirect to WP Dashboard
 			wp_safe_redirect( admin_url());
 			die();
 		}
-	}
+	} 
 }
 
 function custom_site_url( $url, $path, $scheme, $blog_id ) {
