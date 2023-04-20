@@ -1,7 +1,6 @@
 <?php 
-
 /*
-* Modify default WP wp-admin to custom url. 
+* Change Login WordPress Url from default (wp-admin)
 */
 
 defined('ABSPATH') or die();
@@ -14,7 +13,7 @@ add_filter( 'site_option_welcome_email', 'welcome_email'); //update welcome emai
 
 function custom_login_slug() {
 	
-	$slug = getenv('SITE_LOGIN_SLUG') ? getenv('SITE_LOGIN_SLUG') : 'login';
+	$slug = getenv('SITE_LOGIN_SLUG') ? getenv('SITE_LOGIN_SLUG') : 'site-admin';
 	return $slug;
 }
 
@@ -49,17 +48,23 @@ function custom_wp_loaded() {
 	$login_slug = '/'.$login_slug;
 	
 	if ( is_admin() && ! is_user_logged_in() && ! defined( 'DOING_AJAX' ) ) {
-		//When user trying to reach wp-admin
+		//Trying to reach wp-admin
 		wp_safe_redirect( '/' );
 		die();
 	}
 
-	if(substr( $req_uri, 0, strlen($login_slug) + 1 ) === $login_slug . '/' ||
-	substr( $req_uri, 0, strlen($login_slug) + 1 ) === $login_slug .'?' ){
-		global $error, $interim_login, $action, $user_login;
-		//GET wp-login file
-		@require_once ABSPATH . 'wp-login.php';
-		die();
+	if($req_uri === $login_slug ||
+		substr( $req_uri, 0, strlen($login_slug) + 1 ) === $login_slug . '/' ||
+		substr( $req_uri, 0, strlen($login_slug) + 1 ) === $login_slug .'?' ){
+		//[/login-slug][/login-slug/][/login-slug?*]
+		if(!is_user_logged_in()){
+			global $error, $interim_login, $action, $user_login;
+			@require_once ABSPATH . 'wp-login.php';
+			die();
+		} else {//Logged in -> Redirect to WP Dashboard
+			wp_safe_redirect( admin_url());
+			die();
+		}
 	}
 }
 
