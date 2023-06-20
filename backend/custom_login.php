@@ -101,3 +101,10 @@ function filter_wp_login_php( $url, $scheme = null ) {
 function welcome_email( $value ) {
 	return $value = str_replace( 'wp-login.php', custom_login_url() , $value );
 }
+
+function custom_logout_url() {
+    $logout_url = home_url( '/wp/wp-login.php?action=logout' );
+    $logout_url = add_query_arg( '_wpnonce', wp_create_nonce( 'log-out' ), $logout_url );
+    return $logout_url;
+}
+add_filter( 'logout_url', 'custom_logout_url' );
