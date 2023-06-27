@@ -58,7 +58,7 @@ add_filter( 'allowed_block_types_all', function ( $allowed_blocks, $editor_conte
 		);
 	}
 
-	return apply_filters( 'sw_blocks_allowed_everywhere', $allowed_blocks);
+	return apply_filters( 'base_blocks_allowed_everywhere', $allowed_blocks);
 }, 10, 2 );
 
 /**
