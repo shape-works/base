@@ -48,6 +48,12 @@ function create_post_type(
 			'labels' => [
 				'name' => $plural_name,
 				'singular_name' => $singular_name,
+				'new_item' => 'New ' . $singular_name,
+				'edit_item' => 'Edit ' . $singular_name,
+				'view_item' => 'View ' . $singular_name,
+				'all_items' => 'All ' . $plural_name,
+				'search_items' => 'Search '. $plural_name,
+				'not_found' => 'No ' . $plural_name . ' found.',
 			],
 			'public' => $public,
 			'has_archive' => $has_archive,
