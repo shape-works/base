@@ -37,11 +37,53 @@ add_action( 'init', function () {
 		
 		// get image ID from its url
 		$image_id = attachment_url_to_postid($original_image_url);
+
+
+		function parse_crop_string($crop_string) {
+			$crop_string = strtolower(str_replace('-', '', $crop_string));
+		
+			$crop_mappings = array(
+				//Left X + Y
+				'lefttop' => array('left', 'top'),
+				'topleft' => array('left', 'top'),
+				'leftcenter' => array('left', 'center'),
+				'centerleft' => array('left', 'center'),
+				'leftbottom' => array('left', 'bottom'),
+				'bottomleft' => array('left', 'bottom'),
+
+				//Right X + Y
+				'righttop'   => array('right', 'top'),
+				'topright'   => array('right', 'top'),
+				'rightcenter'   => array('right', 'center'),
+				'centerright'   => array('right', 'center'),
+				'rightbottom'   => array('right', 'bottom'),
+				'bottomright'   => array('right', 'bottom'),
+			);
+		
+			// Check if the input string is in the mappings
+			if (isset($crop_mappings[$crop_string])) {
+				return $crop_mappings[$crop_string];
+			}
+		
+			//Default
+			return array('center', 'center');
+		}
+
 		
 		// get width, height & crop values
 		$width = array_key_exists('width', $options_key_value_array) ? $options_key_value_array['width'] : 0;
 		$height = array_key_exists('height', $options_key_value_array) ? $options_key_value_array['height'] : 0;
-		$crop = array_key_exists('crop', $options_key_value_array) && $options_key_value_array['crop'] == '1' ? true : false;
+		$crop = false;
+
+		if(array_key_exists('crop', $options_key_value_array)){
+			if($options_key_value_array['crop'] == '1'){
+				$crop = true;
+			}else if($options_key_value_array['crop'] == '0'){
+				$crop = false;
+			} else if(is_string($options_key_value_array['crop'])){
+				$crop = parse_crop_string($options_key_value_array['crop']);
+			}
+		}
 		
 		// run function that uses Fly to get or generate resized image
 		$fly_image = fly_get_attachment_image_src($image_id, array( $width, $height ), $crop);

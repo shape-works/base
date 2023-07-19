@@ -82,7 +82,7 @@ function replace_image_url_with_resized_url_and_add_srcset(
  	array $attributes, 
 	string $width, 
 	string $height, 
-	bool $crop = true, 
+	string $crop = '', 
 	string $attributeName = 'imageObject',
 	string $sizes = ''
 ) {
@@ -90,6 +90,15 @@ function replace_image_url_with_resized_url_and_add_srcset(
 	if(array_key_exists($attributeName, $attributes)){ 
 		$image_url = $attributes[$attributeName]['url'];
 		$attachment_id = $attributes[$attributeName]['id'];
+
+		if(array_key_exists('crop' ,$attributes[$attributeName])){
+		 
+			$imageCropPosition = $attributes[$attributeName]['crop'];
+			$imageCropPosition = str_replace(' ', '-', $imageCropPosition);
+			$crop = $imageCropPosition;
+			
+		}
+		
 	} else {//Fallback from previous version using imageUrlAttribute
 		$image_url = isset($attributes[$attributeName]) ? $attributes[$attributeName] : false;
 		$attachment_id  = attachment_url_to_postid( $image_url );
@@ -97,11 +106,11 @@ function replace_image_url_with_resized_url_and_add_srcset(
 	
 	if($image_url && $attachment_id){
 		// find the src url and replace it with resized url
-		$pattern = '~src="' . $image_url . '"~';
+		$pattern = '~src="' . $image_url . '"~'; 
 
 		$img_with_srcset_attribute = get_image_attributes($attachment_id, $width, $height, '', $crop, $sizes);
 
-		$content = preg_replace($pattern, $img_with_srcset_attribute, $content);
+		$content = preg_replace($pattern, $img_with_srcset_attribute, $content, 1);
 
 		return $content;
 	} else { // no image used
@@ -117,7 +126,7 @@ function get_image_attributes(
 	int $width, 
 	int $height,
 	string $class = '', 
-	bool $crop = true,
+	string $crop = '',
 	string $sizes = ''
 ){
 	if($attachment_id){
