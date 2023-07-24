@@ -58,6 +58,12 @@ add_action( 'init', function () {
 				'centerright'   => array('right', 'center'),
 				'rightbottom'   => array('right', 'bottom'),
 				'bottomright'   => array('right', 'bottom'),
+
+				//Center X + Y
+				'centerbottom'   => array('center', 'bottom'),
+				'bottomcenter'   => array('center', 'bottom'),
+				'topcenter'   => array('center', 'top'),
+				'centertop'   => array('center', 'top'),
 			);
 		
 			// Check if the input string is in the mappings
