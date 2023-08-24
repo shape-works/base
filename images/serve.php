@@ -7,9 +7,11 @@ defined('ABSPATH') or die("No direct access");
 
 add_action( 'init', function () {
 	
-	if (preg_match("~^\/images\/~", $_SERVER['REQUEST_URI'])) {
+	$rewrite_regex = apply_filters('base_image_regex', "~^\/images\/~");
+	
+	if( preg_match( $rewrite_regex, $_SERVER['REQUEST_URI'] ) ) {
 
-		$image_url = $_SERVER['REQUEST_URI'];
+		$image_url = apply_filters( 'base_image_full_url', $_SERVER['REQUEST_URI'] );
 
 		// remove "/images/"
 		$image_url_minus_image_path = str_replace("/images/", "", $image_url);
@@ -33,7 +35,8 @@ add_action( 'init', function () {
 		$image_directory_and_filename = "/app/uploads/" . $image_url_minus_options;
 		
 		// reconstruct image url
-		$original_image_url = 'http://' . $_SERVER['HTTP_HOST'] . $image_directory_and_filename;
+		$site_domain = apply_filters( 'base_image_site_domain', $_SERVER['HTTP_HOST']);
+		$original_image_url = 'http://' . $site_domain . $image_directory_and_filename;
 		
 		// get image ID from its url
 		$image_id = attachment_url_to_postid($original_image_url);
