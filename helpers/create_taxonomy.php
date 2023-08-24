@@ -6,7 +6,7 @@ function create_taxonomy(
 	array $post_types,
 	string $plural_name = '',
 	string $slug = '',
-	array $rewrite = [],
+	string $rewrite = '',
 	bool $public = true,
 	bool $hierarchical = true,
 	bool $show_in_rest = true,
@@ -21,9 +21,7 @@ function create_taxonomy(
 	}
 
 	if(empty($rewrite)) {
-		$rewrite = [
-			'slug' => $slug
-		];
+		$rewrite = $slug;
 	}
 
 	if (empty($plural_name)) {
@@ -39,7 +37,7 @@ function create_taxonomy(
 				'singular_name' => $singular_name,
 			],
 			'public' => $public,
-			'rewrite' => $rewrite,
+			'rewrite' => ['slug' => $rewrite],
 			'hierarchical' => $hierarchical,
 			'show_in_rest' => $show_in_rest,
 			'default_term' => $default_term,
