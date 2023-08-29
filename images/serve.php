@@ -4,7 +4,6 @@ defined('ABSPATH') or die("No direct access");
 /**
  * Serve resized images if URL starts with images/
  */
-
 add_action( 'init', function () {
 	
 	$rewrite_regex = apply_filters('base_image_regex', "~^\/images\/~");
@@ -107,6 +106,7 @@ add_action( 'init', function () {
 		// construct the path to the Fly image
 		$trimmed_abspath = substr(ABSPATH, 0, -3); // trim 'wp/' subfolder from ABSPATH
 		$fly_image_path = $trimmed_abspath . $fly_image_url_parsed['path'];
+		$fly_image_path = apply_filters('base_fly_image_path', $fly_image_path);
 
 		$type = mime_content_type($fly_image_path);
 
