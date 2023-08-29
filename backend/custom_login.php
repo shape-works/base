@@ -5,11 +5,14 @@
 
 defined('ABSPATH') or die();
 
-add_action('init','prevent_wp_login_access'); //prevent user to reach wp-login.php
-add_action( 'wp_loaded', 'custom_wp_loaded' ); //detect custom login url
-add_filter( 'site_url', 'custom_site_url', 10, 4 );
-add_filter( 'wp_redirect', 'custom_wp_redirect', 10, 2 );
-add_filter( 'site_option_welcome_email', 'welcome_email'); //update welcome email login url 
+$is_custom_login_enabled = apply_filters('base_custom_login', true);
+if ($is_custom_login_enabled) {
+	add_action('init','prevent_wp_login_access'); //prevent user to reach wp-login.php
+	add_action( 'wp_loaded', 'custom_wp_loaded' ); //detect custom login url
+	add_filter( 'site_url', 'custom_site_url', 10, 4 );
+	add_filter( 'wp_redirect', 'custom_wp_redirect', 10, 2 );
+	add_filter( 'site_option_welcome_email', 'welcome_email'); //update welcome email login url 
+}
 
 function custom_login_slug() {
 	
