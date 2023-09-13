@@ -17,7 +17,7 @@ function create_post_type(
 	string $icon = 'dashicons-admin-post',
 	string $rewrite = '',
 	bool $hierarchical = false,
-	bool $has_archive = true,
+	bool $has_archive = null,
 	bool $public = true,
 	bool $show_in_rest = true,
 	array $supports = [
@@ -41,6 +41,10 @@ function create_post_type(
 	if (empty($plural_name)) {
 		$plural_name = $singular_name.'s';
 	}
+
+	if ($has_archive === null) {
+        $has_archive = $public;
+    }
 
 	register_post_type(
 		$slug,
