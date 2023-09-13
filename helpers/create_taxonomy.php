@@ -8,6 +8,8 @@ function create_taxonomy(
 	string $slug = '',
 	string $rewrite = '',
 	bool $public = true,
+	bool $show_ui = true,
+	bool $show_admin_column = true,
 	bool $hierarchical = true,
 	bool $show_in_rest = true,
 	array $default_term = [
@@ -37,6 +39,8 @@ function create_taxonomy(
 				'singular_name' => $singular_name,
 			],
 			'public' => $public,
+			'show_ui' => $show_ui,
+			'show_admin_column' => $show_admin_column, 
 			'rewrite' => ['slug' => $rewrite],
 			'hierarchical' => $hierarchical,
 			'show_in_rest' => $show_in_rest,
