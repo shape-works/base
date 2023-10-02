@@ -20,6 +20,7 @@ function create_post_type(
 	bool $has_archive = null,
 	bool $public = true,
 	bool $show_in_rest = true,
+	bool $exclude_from_search = null,
 	array $supports = [
 		'title',
 		'thumbnail',
@@ -46,6 +47,10 @@ function create_post_type(
         $has_archive = $public;
     }
 
+	if ($exclude_from_search === null) {
+		$exclude_from_search = !$public;
+    }
+
 	register_post_type(
 		$slug,
 		[
@@ -65,6 +70,7 @@ function create_post_type(
 			'menu_icon' => $icon,
 			'rewrite' => ['slug' => $rewrite],
 			'show_in_rest' => $show_in_rest,
+			'exclude_from_search' => $exclude_from_search,
 			'supports' => $supports,
 		]
 	);
