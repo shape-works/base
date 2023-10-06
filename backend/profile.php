@@ -5,9 +5,9 @@ defined('ABSPATH') or die("No direct access");
 /**
 * Remove all social profile fields that Yoast adds to user profile Contact Info
 */
-add_filter( 'user_contactmethods', function ( $contact_methods ) {
+add_filter('user_contactmethods', function() {
 	return array();
-});
+}, 999);
 
 
 

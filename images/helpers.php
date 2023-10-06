@@ -67,7 +67,9 @@ function add_resizing_settings_to_image_path($url, $width, $height, $crop) {
 		return $url;
 	} else {
 		$site_domain = get_home_url();
-		$url = str_replace('app/uploads/', '', parse_url($url, PHP_URL_PATH));
+		$app_uploads_path = apply_filters( 'base_image_app_uploads_path', 'app/uploads/' );
+
+		$url = str_replace($app_uploads_path, '', parse_url($url, PHP_URL_PATH));
 		// add query string for image resizing to the url
 		return $site_domain . '/images/width=' . $width . ',height=' . $height . ',crop=' . $crop . $url;
 	}

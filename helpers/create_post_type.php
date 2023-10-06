@@ -17,9 +17,10 @@ function create_post_type(
 	string $icon = 'dashicons-admin-post',
 	string $rewrite = '',
 	bool $hierarchical = false,
-	bool $has_archive = true,
+	bool $has_archive = null,
 	bool $public = true,
 	bool $show_in_rest = true,
+	bool $exclude_from_search = null,
 	array $supports = [
 		'title',
 		'thumbnail',
@@ -42,6 +43,14 @@ function create_post_type(
 		$plural_name = $singular_name.'s';
 	}
 
+	if ($has_archive === null) {
+        $has_archive = $public;
+    }
+
+	if ($exclude_from_search === null) {
+		$exclude_from_search = !$public;
+    }
+
 	register_post_type(
 		$slug,
 		[
@@ -61,6 +70,7 @@ function create_post_type(
 			'menu_icon' => $icon,
 			'rewrite' => ['slug' => $rewrite],
 			'show_in_rest' => $show_in_rest,
+			'exclude_from_search' => $exclude_from_search,
 			'supports' => $supports,
 		]
 	);

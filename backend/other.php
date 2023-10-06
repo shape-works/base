@@ -55,7 +55,6 @@ add_action( 'admin_menu', function() {
 	remove_menu_page( 'index.php' );
 
 	if( !in_array('administrator', wp_get_current_user()->roles) ){
-		remove_menu_page( 'tools.php' );
 		remove_menu_page( 'options-general.php' );
 	}
 }, 999 );
