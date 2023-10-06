@@ -4,6 +4,7 @@ defined('ABSPATH') or die("No direct access");
 /**
  * Custom functions for registering and getting cropped images using Fly
 */
+
 // Register image size in Fly or default fallback
 function paws_add_image_size( $size_name = '', $width = 0, $height = 0, $crop = false ) {
 	if ( function_exists( 'fly_add_image_size' ) ) {
@@ -123,6 +124,7 @@ function replace_image_url_with_resized_url_and_add_srcset(
 /** 
  * Post thumbnail return with alt tag and srcset
  */
+
 function get_image_attributes(
 	int $attachment_id = null,
 	int $width, 
