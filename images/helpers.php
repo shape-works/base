@@ -84,7 +84,8 @@ function replace_image_url_with_resized_url_and_add_srcset(
 	string $height, 
 	string $crop = '', 
 	string $attributeName = 'imageObject',
-	string $sizes = ''
+	string $sizes = '',
+	bool $lazy_load = true
 ) {
 
 	if(array_key_exists($attributeName, $attributes)){ 
@@ -108,7 +109,7 @@ function replace_image_url_with_resized_url_and_add_srcset(
 		// find the src url and replace it with resized url
 		$pattern = '~src="' . $image_url . '"~'; 
 
-		$img_with_srcset_attribute = get_image_attributes($attachment_id, $width, $height, '', $crop, $sizes);
+		$img_with_srcset_attribute = get_image_attributes($attachment_id, $width, $height, '', $crop, $sizes, $lazy_load);
 
 		$content = preg_replace($pattern, $img_with_srcset_attribute, $content, 1);
 
@@ -127,7 +128,8 @@ function get_image_attributes(
 	int $height,
 	string $class = '', 
 	string $crop = '',
-	string $sizes = ''
+	string $sizes = '',
+	bool $lazy_load = true
 ){
 	if($attachment_id){
 		$image_url = wp_get_attachment_url( $attachment_id );
@@ -161,8 +163,8 @@ function get_image_attributes(
 				srcset="'. $srcset .'"
 				width="'.$width.'"
 				height="'.$height.'"
-				alt="'.$image_alt.'"
-				loading="lazy"';
+				alt="'.$image_alt.'"';
+			$lazy_load == true ? $image_attributes .= 'loading="lazy"' : '';
 			$sizes ? $image_attributes .= 'sizes="'.$sizes.'"' : '';
 			$class ? $image_attributes .= 'class="'.$class.'"' : ''; 
 			
