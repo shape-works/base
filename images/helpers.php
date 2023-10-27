@@ -87,10 +87,11 @@ function replace_image_url_with_resized_url_and_add_srcset(
 	string $crop = '', 
 	string $attributeName = 'imageObject',
 	string $sizes = '',
-	bool $lazy_load = true
+	bool $lazy_load = true,
+	bool $alwaysUseFallback = false
 ) {
 
-	if(array_key_exists($attributeName, $attributes)){ 
+	if( array_key_exists($attributeName, $attributes) && !$alwaysUseFallback ){ 
 		$image_url = $attributes[$attributeName]['url'];
 		$attachment_id = $attributes[$attributeName]['id'];
 
