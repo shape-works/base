@@ -155,7 +155,11 @@ function get_image_attributes(
 			$srcset .= $resized_image_url_2x . ' ' . $width * 2 . 'w';
 
 			if(!$crop){
-				if($image_original_width > $image_original_height){
+				if(
+					$image_original_width > $image_original_height
+					||
+					$height == 0
+				){
 					$height = ($image_original_height/$image_original_width) * $width;
 				} else {
 					$width = ($image_original_height/$image_original_width) * $image_original_height;
