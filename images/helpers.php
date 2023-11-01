@@ -96,7 +96,6 @@ function replace_image_url_with_resized_url_and_add_srcset(
 		$attachment_id = $attributes[$attributeName]['id'];
 
 		if($crop !== false && array_key_exists('crop' ,$attributes[$attributeName])){
-		 
 			$imageCropPosition = $attributes[$attributeName]['crop'];
 			$imageCropPosition = str_replace(' ', '-', $imageCropPosition);
 			$crop = $imageCropPosition;
