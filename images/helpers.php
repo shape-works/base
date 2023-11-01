@@ -99,8 +99,9 @@ function replace_image_url_with_resized_url_and_add_srcset(
 			$imageCropPosition = $attributes[$attributeName]['crop'];
 			$imageCropPosition = str_replace(' ', '-', $imageCropPosition);
 			$crop = $imageCropPosition;
-			
 		}
+
+		$crop == false ? $crop = 0 : '';
 		
 	} else {//Fallback from previous version using imageUrlAttribute
 		$image_url = isset($attributes[$attributeName]) ? $attributes[$attributeName] : false;
