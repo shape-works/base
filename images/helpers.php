@@ -84,7 +84,7 @@ function replace_image_url_with_resized_url_and_add_srcset(
  	array $attributes, 
 	string $width, 
 	string $height, 
-	string $crop = '', 
+	string | bool $crop = '', 
 	string $attributeName = 'imageObject',
 	string $sizes = '',
 	bool $lazy_load = true,
@@ -95,7 +95,7 @@ function replace_image_url_with_resized_url_and_add_srcset(
 		$image_url = $attributes[$attributeName]['url'];
 		$attachment_id = $attributes[$attributeName]['id'];
 
-		if(array_key_exists('crop' ,$attributes[$attributeName])){
+		if($crop !== false && array_key_exists('crop' ,$attributes[$attributeName])){
 		 
 			$imageCropPosition = $attributes[$attributeName]['crop'];
 			$imageCropPosition = str_replace(' ', '-', $imageCropPosition);
