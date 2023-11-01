@@ -100,6 +100,7 @@ function replace_image_url_with_resized_url_and_add_srcset(
 			$imageCropPosition = str_replace(' ', '-', $imageCropPosition);
 			$crop = $imageCropPosition;
 		}
+		
 
 		$crop == false ? $crop = 0 : '';
 		
