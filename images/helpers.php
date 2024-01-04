@@ -71,9 +71,7 @@ function add_resizing_settings_to_image_path($url, $width, $height, $crop) {
 
 		$url = str_replace($app_uploads_path, '', parse_url($url, PHP_URL_PATH));
 
-		if($crop == false){
-			$crop = 0;
-		} 
+		$crop == false ? $crop = 0 : '';
 
 		// add query string for image resizing to the url
 		return $site_domain . '/images/width=' . $width . ',height=' . $height . ',crop=' . $crop . $url;
