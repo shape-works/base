@@ -19,6 +19,9 @@ function create_post_type(
 	bool $hierarchical = false,
 	bool $has_archive = null,
 	bool $public = true,
+	bool $publicly_queryable = null,
+	bool $show_ui = null,
+	bool $show_in_menu = null,
 	bool $show_in_rest = true,
 	bool $exclude_from_search = null,
 	array $supports = [
@@ -43,6 +46,18 @@ function create_post_type(
 		$plural_name = $singular_name.'s';
 	}
 
+	if ($publicly_queryable === null) {
+        $publicly_queryable = $public;
+    }
+
+	if ($show_ui === null) {
+        $show_ui = $public;
+    }
+
+	if ($show_in_menu === null) {
+        $show_in_menu = $public;
+    }
+
 	if ($has_archive === null) {
         $has_archive = $public;
     }
@@ -64,8 +79,11 @@ function create_post_type(
 				'search_items' => 'Search '. $plural_name,
 				'not_found' => 'No ' . $plural_name . ' found.',
 			],
-			'public' => $public,
-			'has_archive' => $has_archive,
+			'public' 			 => $public,
+			'publicly_queryable' => $publicly_queryable,
+			'show_ui'            => $show_ui,
+			'show_in_menu'       => $show_in_menu,
+			'has_archive' 		 => $has_archive,
 			'hierarchical' => $hierarchical,
 			'menu_icon' => $icon,
 			'rewrite' => ['slug' => $rewrite],

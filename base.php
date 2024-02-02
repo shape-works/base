@@ -2,7 +2,7 @@
 /*
 Plugin Name: Base
 Description:
-Version: 1.0.0
+Version: 2.86.0
 Author: Shape Works
 Author URI: https://shape.works
 */
