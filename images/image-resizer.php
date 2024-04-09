@@ -20,7 +20,6 @@ function jb_fly_images_init()
 	add_action('switch_blog', 'jb_fly_images_blog_switched');
 }
 
-
 function get_fly_dir($path = '')
 {
 	$wp_upload_dir = wp_upload_dir();
