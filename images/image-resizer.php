@@ -47,7 +47,6 @@ function delete_attachment_fly_images($attachment_id = 0)
 	return $wp_filesystem->rmdir(get_fly_dir($attachment_id), true);
 }
 
-
 function get_fly_file_name($file_name, $width, $height, $crop)
 {
 	$file_name_only = pathinfo($file_name, PATHINFO_FILENAME);
@@ -83,12 +82,18 @@ function blog_switched()
 if (!function_exists('fly_get_attachment_image_src')) {
 	function fly_get_attachment_image_src($attachment_id = 0, $size = '', $crop = null)
 	{
+
+		
 		if ($attachment_id < 1 || empty($size)) {
 			return array();
 		}
 
+		
+
 		// Get the attachment image
 		$image = wp_get_attachment_metadata($attachment_id);
+
+		
 		if (false !== $image && $image) {
 			// Determine width and height based on size
 			switch (gettype($size)) {
@@ -102,7 +107,7 @@ if (!function_exists('fly_get_attachment_image_src')) {
 
 			// Get file path
 			$fly_dir       = get_fly_dir($attachment_id);
-			$fly_file_path = $fly_dir . DIRECTORY_SEPARATOR . get_fly_file_name(basename($image['file']), $width, $height, $crop);
+			$fly_file_path = $fly_dir . DIRECTORY_SEPARATOR . get_fly_file_name(basename($image['file']), $width, $height, $crop); 
 
 			// Check if file exists
 			if (file_exists($fly_file_path)) {
@@ -118,11 +123,6 @@ if (!function_exists('fly_get_attachment_image_src')) {
 				}
 			}
 
-			// Check if images directory is writable
-			if (!(is_dir($fly_dir) && wp_is_writable($fly_dir))) {
-				return array();
-			}
-
 			// File does not exist, lets check if directory exists
 			check_fly_dir($fly_dir);
 
@@ -135,6 +135,8 @@ if (!function_exists('fly_get_attachment_image_src')) {
 				$crop
 			);
 			$image_editor = wp_get_image_editor($image_path);
+
+			
 			if (!is_wp_error($image_editor)) {
 				// Create new image
 				$image_editor->resize($width, $height, $crop);
