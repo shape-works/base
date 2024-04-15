@@ -33,9 +33,12 @@ add_action('admin_bar_menu', function ($wp_admin_bar) {
 * Disable built-in Posts post type
 */
 // Remove Posts from admin menu
-add_action( 'admin_menu', function() {
-	remove_menu_page( 'edit.php' );
+add_action('admin_menu', function() {
+    if (!defined('ENABLE_POSTS_MENU')) {
+        remove_menu_page('edit.php');
+    }
 });
+
 
 // Remove +New post in menu bar
 add_action( 'admin_bar_menu', function ( $wp_admin_bar ) {
