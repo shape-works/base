@@ -39,7 +39,6 @@ add_action('admin_menu', function() {
     }
 });
 
-
 // Remove +New post in menu bar
 add_action( 'admin_bar_menu', function ( $wp_admin_bar ) {
 	$wp_admin_bar->remove_node( 'new-post' );
