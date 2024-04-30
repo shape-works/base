@@ -58,3 +58,20 @@ add_action( 'admin_menu', function() {
 		remove_menu_page( 'options-general.php' );
 	}
 }, 999 );
+
+
+// Add a custom link Simple History under the Tools menu
+function custom_tools_menu_link() {
+    if (is_plugin_active('simple-history/index.php')) {
+        add_submenu_page(
+            'tools.php',                  // parent slug
+            'Simple History log',         // page title
+            'Simple History log',                // menu title
+            'manage_options',             // capability
+            '/index.php?page=simple_history_page',  // custom link URL
+            '',                           // callback function (empty)
+            null                          // icon URL (null)
+        );
+    }
+}
+add_action('admin_menu', 'custom_tools_menu_link');
