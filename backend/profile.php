@@ -3,25 +3,25 @@ defined('ABSPATH') or die("No direct access");
 
 
 /**
-* Remove all social profile fields that Yoast adds to user profile Contact Info
-*/
-add_filter('user_contactmethods', function() {
+ * Remove all social profile fields that Yoast adds to user profile Contact Info
+ */
+add_filter('user_contactmethods', function () {
 	return array();
 }, 999);
 
 
 
 // Remove color scheme picker from profile page
-add_action( 'admin_head-profile.php', function() {
-	remove_action( 'admin_color_scheme_picker', 'admin_color_scheme_picker' );
+add_action('admin_head-profile.php', function () {
+	remove_action('admin_color_scheme_picker', 'admin_color_scheme_picker');
 });
 
 
 /**
-* Hide unwanted fields in the user profile
-*/
-add_action( 'admin_head-user-edit.php', 'paws_remove_user_profile_fields_with_css' );
-add_action( 'admin_head-profile.php',   'paws_remove_user_profile_fields_with_css' );
+ * Hide unwanted fields in the user profile
+ */
+add_action('admin_head-user-edit.php', 'paws_remove_user_profile_fields_with_css');
+add_action('admin_head-profile.php',   'paws_remove_user_profile_fields_with_css');
 function paws_remove_user_profile_fields_with_css() {
 
 	$fields_to_hide = [
@@ -32,24 +32,24 @@ function paws_remove_user_profile_fields_with_css() {
 		// 'user-login',
 		// 'role',
 		// 'super-admin',
-		'first-name', 
-		'last-name', 
+		'first-name',
+		'last-name',
 		// 'nickname', 
-		'display-name', 
+		'display-name',
 		// 'email',
-		'description', 
+		'description',
 		// 'pass1', 
 		// 'pass2', 
 		// 'sessions', 
 		// 'capabilities',
 		'syntax-highlighting',
 		'url'
-	
+
 	];
-	
+
 	//add the CSS
 	foreach ($fields_to_hide as $field_name) {
-		echo '<style>tr.user-'.$field_name.'-wrap{ display: none; }</style>';
+		echo '<style>tr.user-' . $field_name . '-wrap{ display: none; }</style>';
 	}
 
 	//fields that don't follow the wrapper naming convention

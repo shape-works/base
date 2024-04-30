@@ -5,8 +5,7 @@ Description: Dynamically create image sizes on the fly!
 Version: 1.0.0
 */
 defined('ABSPATH') or die('No script kiddies please!');
-function jb_fly_images_init()
-{
+function jb_fly_images_init() {
 	// Set fly directory
 	$fly_dir = get_fly_dir();
 
@@ -20,23 +19,20 @@ function jb_fly_images_init()
 	add_action('switch_blog', 'jb_fly_images_blog_switched');
 }
 
-function get_fly_dir($path = '')
-{
+function get_fly_dir($path = '') {
 	$wp_upload_dir = wp_upload_dir();
 	return $wp_upload_dir['basedir'] . DIRECTORY_SEPARATOR . 'fly-images' . ('' !== $path ? DIRECTORY_SEPARATOR . $path : '');
 }
 /**
  * Create fly images directory if it doesn't already exist.
  */
-function check_fly_dir($fly_dir)
-{
+function check_fly_dir($fly_dir) {
 	if (!is_dir($fly_dir)) {
 		wp_mkdir_p($fly_dir);
 	}
 }
 
-function delete_attachment_fly_images($attachment_id = 0)
-{
+function delete_attachment_fly_images($attachment_id = 0) {
 	if (!function_exists('WP_Filesystem')) {
 		return false;
 	}
@@ -46,8 +42,7 @@ function delete_attachment_fly_images($attachment_id = 0)
 	return $wp_filesystem->rmdir(get_fly_dir($attachment_id), true);
 }
 
-function get_fly_file_name($file_name, $width, $height, $crop)
-{
+function get_fly_file_name($file_name, $width, $height, $crop) {
 	$file_name_only = pathinfo($file_name, PATHINFO_FILENAME);
 	$file_extension = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
 
@@ -63,15 +58,13 @@ function get_fly_file_name($file_name, $width, $height, $crop)
 	return $file_name_only . '-' . intval($width) . 'x' . intval($height) . $crop_extension . '.' . $file_extension;
 }
 
-function get_fly_path($absolute_path = '')
-{
+function get_fly_path($absolute_path = '') {
 	$wp_upload_dir = wp_upload_dir();
 	$path          = $wp_upload_dir['baseurl'] . str_replace($wp_upload_dir['basedir'], '', $absolute_path);
 	return str_replace(DIRECTORY_SEPARATOR, '/', $path);
 }
 
-function blog_switched()
-{
+function blog_switched() {
 	global $fly_dir;
 	$fly_dir = '';
 	$fly_dir = apply_filters('fly_dir_path', get_fly_dir());
@@ -79,20 +72,19 @@ function blog_switched()
 
 ///Helpers
 if (!function_exists('fly_get_attachment_image_src')) {
-	function fly_get_attachment_image_src($attachment_id = 0, $size = '', $crop = null)
-	{
+	function fly_get_attachment_image_src($attachment_id = 0, $size = '', $crop = null) {
 
-		
+
 		if ($attachment_id < 1 || empty($size)) {
 			return array();
 		}
 
-		
+
 
 		// Get the attachment image
 		$image = wp_get_attachment_metadata($attachment_id);
 
-		
+
 		if (false !== $image && $image) {
 			// Determine width and height based on size
 			switch (gettype($size)) {
@@ -106,7 +98,7 @@ if (!function_exists('fly_get_attachment_image_src')) {
 
 			// Get file path
 			$fly_dir       = get_fly_dir($attachment_id);
-			$fly_file_path = $fly_dir . DIRECTORY_SEPARATOR . get_fly_file_name(basename($image['file']), $width, $height, $crop); 
+			$fly_file_path = $fly_dir . DIRECTORY_SEPARATOR . get_fly_file_name(basename($image['file']), $width, $height, $crop);
 
 			// Check if file exists
 			if (file_exists($fly_file_path)) {
@@ -135,7 +127,7 @@ if (!function_exists('fly_get_attachment_image_src')) {
 			);
 			$image_editor = wp_get_image_editor($image_path);
 
-			
+
 			if (!is_wp_error($image_editor)) {
 				// Create new image
 				$image_editor->resize($width, $height, $crop);

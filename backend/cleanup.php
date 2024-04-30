@@ -2,15 +2,15 @@
 defined('ABSPATH') or die("No direct access");
 
 /**
-* Remove Help button at top of admin screens
-*/
-add_filter('admin_head', function (){
+ * Remove Help button at top of admin screens
+ */
+add_filter('admin_head', function () {
 	get_current_screen()->remove_help_tabs();
 });
 
 /**
-* Remove menu bar items
-*/
+ * Remove menu bar items
+ */
 add_action('admin_bar_menu', function ($wp_admin_bar) {
 	$wp_admin_bar->remove_node('new-content');
 	$wp_admin_bar->remove_node('search');
@@ -22,7 +22,7 @@ add_action('admin_bar_menu', function ($wp_admin_bar) {
 	$wp_admin_bar->remove_node('dashboard');
 	$wp_admin_bar->remove_menu('user-info', 'user-actions');
 
-	$wp_admin_bar->add_node( array(
+	$wp_admin_bar->add_node(array(
 		'id' => 'my-account',
 		'title' => wp_get_current_user()->user_email,
 	));
@@ -30,36 +30,36 @@ add_action('admin_bar_menu', function ($wp_admin_bar) {
 
 
 /**
-* Disable built-in Posts post type
-*/
+ * Disable built-in Posts post type
+ */
 // Remove Posts from admin menu
-add_action('admin_menu', function() {
-    if (!defined('ENABLE_POSTS_MENU')) {
-        remove_menu_page('edit.php');
-    }
+add_action('admin_menu', function () {
+	if (!defined('ENABLE_POSTS_MENU')) {
+		remove_menu_page('edit.php');
+	}
 });
 
 // Remove +New post in menu bar
-add_action( 'admin_bar_menu', function ( $wp_admin_bar ) {
-	$wp_admin_bar->remove_node( 'new-post' );
-}, 999 );
+add_action('admin_bar_menu', function ($wp_admin_bar) {
+	$wp_admin_bar->remove_node('new-post');
+}, 999);
 
 
 /**
-* Remove version and thank you message from admin footer
-*/
-add_action( 'admin_menu', function() {
-	remove_filter( 'update_footer', 'core_update_footer' ); 
+ * Remove version and thank you message from admin footer
+ */
+add_action('admin_menu', function () {
+	remove_filter('update_footer', 'core_update_footer');
 });
 
-add_filter('admin_footer_text', function(){
+add_filter('admin_footer_text', function () {
 	return;
 });
 
 /**
-* Clean up WP login page
-*/
-add_filter( 'login_head', function() {
+ * Clean up WP login page
+ */
+add_filter('login_head', function () {
 	echo '
 	<style>
 		#login #backtoblog,
@@ -75,16 +75,16 @@ add_filter( 'login_head', function() {
 /**
  * Remove 'Templates' full-site editing menu from Gutenberg sidebar
  */
-remove_theme_support( 'block-templates' );
+remove_theme_support('block-templates');
 
 
 // Hide dashboard update notifications for all users
 function hide_update_dashboard() {
-	remove_action( 'admin_notices', 'update_nag', 3 );
+	remove_action('admin_notices', 'update_nag', 3);
 }
-	
-add_action('admin_menu','hide_update_dashboard');
+
+add_action('admin_menu', 'hide_update_dashboard');
 
 
 // disable ACF's own custom post type + taxonomy feature
-add_filter( 'acf/settings/enable_post_types', '__return_false' );
+add_filter('acf/settings/enable_post_types', '__return_false');

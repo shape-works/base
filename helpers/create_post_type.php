@@ -38,33 +38,33 @@ function create_post_type(
 		$slug = str_replace(' ', '-', strtolower($singular_name));
 	}
 
-	if(empty($rewrite)) {
+	if (empty($rewrite)) {
 		$rewrite = $slug;
 	}
 
 	if (empty($plural_name)) {
-		$plural_name = $singular_name.'s';
+		$plural_name = $singular_name . 's';
 	}
 
 	if ($publicly_queryable === null) {
-        $publicly_queryable = $public;
-    }
+		$publicly_queryable = $public;
+	}
 
 	if ($show_ui === null) {
-        $show_ui = $public;
-    }
+		$show_ui = $public;
+	}
 
 	if ($show_in_menu === null) {
-        $show_in_menu = $public;
-    }
+		$show_in_menu = $public;
+	}
 
 	if ($has_archive === null) {
-        $has_archive = $public;
-    }
+		$has_archive = $public;
+	}
 
 	if ($exclude_from_search === null) {
 		$exclude_from_search = !$public;
-    }
+	}
 
 	register_post_type(
 		$slug,
@@ -76,7 +76,7 @@ function create_post_type(
 				'edit_item' => 'Edit ' . $singular_name,
 				'view_item' => 'View ' . $singular_name,
 				'all_items' => 'All ' . $plural_name,
-				'search_items' => 'Search '. $plural_name,
+				'search_items' => 'Search ' . $plural_name,
 				'not_found' => 'No ' . $plural_name . ' found.',
 			],
 			'public' 			 => $public,

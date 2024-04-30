@@ -2,13 +2,13 @@
 defined('ABSPATH') or die("No direct access");
 
 /**
-* Force 'post' redirect rules to have pretty permalinks enabled.
-*/
-add_action( 'init', function () {
+ * Force 'post' redirect rules to have pretty permalinks enabled.
+ */
+add_action('init', function () {
 
-	global $wp_rewrite; 
-	$wp_rewrite->set_permalink_structure('/%postname%/'); 
-	update_option( "rewrite_rules", FALSE );
+	global $wp_rewrite;
+	$wp_rewrite->set_permalink_structure('/%postname%/');
+	update_option("rewrite_rules", FALSE);
 });
 
 

@@ -22,12 +22,12 @@ function create_taxonomy(
 		$slug = str_replace(' ', '-', $singular_name);
 	}
 
-	if(empty($rewrite)) {
+	if (empty($rewrite)) {
 		$rewrite = $slug;
 	}
 
 	if (empty($plural_name)) {
-		$plural_name = $singular_name.'s';
+		$plural_name = $singular_name . 's';
 	}
 
 	register_taxonomy(
@@ -40,7 +40,7 @@ function create_taxonomy(
 			],
 			'public' => $public,
 			'show_ui' => $show_ui,
-			'show_admin_column' => $show_admin_column, 
+			'show_admin_column' => $show_admin_column,
 			'rewrite' => ['slug' => $rewrite],
 			'hierarchical' => $hierarchical,
 			'show_in_rest' => $show_in_rest,
