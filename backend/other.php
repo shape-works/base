@@ -85,7 +85,6 @@ function be_exclude_noindex_from_search($query) {
 			'value' => 1,
 			'compare' => 'NOT EXISTS',
 		);
-
 		$query->set('meta_query', $meta_query);
 	}
 }
