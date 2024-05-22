@@ -74,3 +74,18 @@ function custom_tools_menu_link() {
 	}
 }
 add_action('admin_menu', 'custom_tools_menu_link');
+
+// Exclude noindex pages (Yoast) from WP search results if Yoast plugin is activated
+add_action('pre_get_posts', 'be_exclude_noindex_from_search');
+function be_exclude_noindex_from_search($query) {
+	if ($query->is_main_query() && $query->is_search() && !is_admin() && is_plugin_active('wordpress-seo/wp-seo.php')) {
+		$meta_query = isset($query->meta_query) ? $query->meta_query : array();
+		$meta_query['noindex'] = array(
+			'key' => '_yoast_wpseo_meta-robots-noindex',
+			'value' => 1,
+			'compare' => 'NOT EXISTS',
+		);
+
+		$query->set('meta_query', $meta_query);
+	}
+}
