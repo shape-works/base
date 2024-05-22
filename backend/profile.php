@@ -16,7 +16,6 @@ add_action('admin_head-profile.php', function () {
 	remove_action('admin_color_scheme_picker', 'admin_color_scheme_picker');
 });
 
-
 /**
  * Hide unwanted fields in the user profile
  */
