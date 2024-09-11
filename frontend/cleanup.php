@@ -61,6 +61,23 @@ function disable_feeds() {
 }
 
 /**
+ * Enable RSS feeds
+ * This function will remove the 'disable_feeds' action if it's added
+ */
+function enable_rss_feed() {
+	remove_action('do_feed', 'disable_feeds', 1);
+	remove_action('do_feed_rdf', 'disable_feeds', 1);
+	remove_action('do_feed_rss', 'disable_feeds', 1);
+	remove_action('do_feed_rss2', 'disable_feeds', 1);
+	remove_action('do_feed_atom', 'disable_feeds', 1);
+	remove_action('do_feed_rss2_comments', 'disable_feeds', 1);
+	remove_action('do_feed_atom_comments', 'disable_feeds', 1);
+
+	add_action('wp_head', 'feed_links_extra', 3); // Re-adds extra feeds links to the head
+	add_action('wp_head', 'feed_links', 2); // Re-adds default feeds links to the head
+}
+
+/**
  * Remove default favicon
  * https://gist.github.com/webdados/a7702e588070f9a1cfa12dff89b3573c
  */
