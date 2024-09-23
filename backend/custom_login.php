@@ -101,7 +101,12 @@ function custom_wp_redirect($location, $status) {
 }
 
 function filter_wp_login_php($url, $scheme = null) {
-	if (strpos($url, 'wp-login.php') !== false) {
+	// Check if the URL is related to the 'postpass' action (password-protected posts)
+	if (isset($_REQUEST['action']) && $_REQUEST['action'] === 'postpass') {
+		return $url; // Do not modify URLs for password-protected posts
+	}
+
+	if (strpos($url, 'wp-login.php') !== false && strpos($url, 'action=postpass') === false) {
 		if (is_ssl()) {
 			$scheme = 'https';
 		}
