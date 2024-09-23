@@ -40,6 +40,12 @@ function custom_login_url($scheme = null) {
 
 function prevent_wp_login_access() {
 	global $pagenow;
+
+	// Check if the user is trying to access a password-protected post
+	if (is_single() && post_password_required()) {
+		return; // Bypass the login redirection for password-protected posts
+	}
+
 	if ('wp-login.php' == $pagenow && !is_user_logged_in()) {
 		wp_redirect('/');
 		exit();
