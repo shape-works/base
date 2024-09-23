@@ -11,9 +11,13 @@ add_action('init', function () {
 	if ($is_custom_login_enabled) {
 
 		global $pagenow;
-		if ('wp-login.php' == $pagenow && !is_user_logged_in()) {
-			wp_redirect('/');
-			exit();
+
+		if (!(isset($_REQUEST['action']) && $_REQUEST['action'] === 'postpass')) {
+			// Proceed with the redirect logic only if 'action' is not 'postpass'
+			if ('wp-login.php' == $pagenow && !is_user_logged_in()) {
+				wp_redirect('/');
+				exit();
+			}
 		}
 
 		add_action('wp_loaded', 'custom_wp_loaded'); //detect custom login url
@@ -101,9 +105,8 @@ function custom_wp_redirect($location, $status) {
 }
 
 function filter_wp_login_php($url, $scheme = null) {
-	// Check if the URL is related to the 'postpass' action (password-protected posts)
-	if (isset($_REQUEST['action']) && $_REQUEST['action'] === 'postpass') {
-		return $url; // Do not modify URLs for password-protected posts
+	if (isset($_POST['post_password']) || isset($_COOKIE['wp-postpass_' . COOKIEHASH])) {
+		return $url; // Do not modify the URL for password-protected posts
 	}
 
 	if (strpos($url, 'wp-login.php') !== false && strpos($url, 'action=postpass') === false) {
