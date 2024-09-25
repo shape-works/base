@@ -105,7 +105,7 @@ function custom_wp_redirect($location, $status) {
 }
 
 function filter_wp_login_php($url, $scheme = null) {
-	if (isset($_POST['post_password']) || isset($_COOKIE['wp-postpass_' . COOKIEHASH])) {
+	if (isset($_POST['post_password'])) {
 		return $url; // Do not modify the URL for password-protected posts
 	}
 
