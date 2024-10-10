@@ -92,7 +92,10 @@ function replace_image_url_with_resized_url_and_add_srcset(
 	bool $lazy_load = true,
 	bool $alwaysUseFallback = false
 ) {
+	$image_url = '';
+	$attachment_id = '';
 
+	// Check for the imageObject attribute
 	if (array_key_exists($attributeName, $attributes) && !$alwaysUseFallback) {
 		$image_url = $attributes[$attributeName]['url'];
 		$attachment_id = $attributes[$attributeName]['id'];
@@ -103,11 +106,18 @@ function replace_image_url_with_resized_url_and_add_srcset(
 			$crop = $imageCropPosition;
 		}
 
-
 		$crop == false ? $crop = 0 : '';
-	} else { //Fallback from previous version using imageUrlAttribute
-		$image_url = isset($attributes[$attributeName]) ? $attributes[$attributeName] : false;
-		$attachment_id  = attachment_url_to_postid($image_url);
+
+	} else {
+		// Fallback to old logic if imageObject does not exist
+		$image_url = isset($attributes["imageUrl"]) ? $attributes["imageUrl"] : false;
+		$attachment_id  = $image_url ? attachment_url_to_postid($image_url) : false;
+
+		// Further fallback to mediaUrl if imageUrl doesn't exist
+		if (!$image_url) {
+			$image_url = isset($attributes["mediaUrl"]) ? $attributes["mediaUrl"] : false;
+			$attachment_id = $image_url ? attachment_url_to_postid($image_url) : false;
+		}
 	}
 
 	if ($image_url && $attachment_id) {
