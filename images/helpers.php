@@ -53,29 +53,32 @@ function paws_get_cropped_image_by_id($data) {
  */
 
 function add_resizing_settings_to_image_path($url, $width, $height, $crop) {
+	if (empty($url)) {
+		return; // return if no image URL was passed
+	}
 
 	$ext = pathinfo($url, PATHINFO_EXTENSION); // get file extension
-
-	if ($url == '') {
-		// return if there was no image passed
-		return;
+	if ($ext === "svg") {
+		return $url; // leave URL unchanged if it's an SVG
 	}
 
-	if ($ext == "svg") {
-		// leave url unchanged if it's an svg
-		return $url;
-	} else {
-		$site_domain = get_home_url();
-		$app_uploads_path = apply_filters('base_image_app_uploads_path', 'app/uploads/');
+	// Extract the base domain and scheme from the URL
+	preg_match('#^(https?://[^/]+)#i', $url, $matches);
+	$site_domain = $matches[1] ?? ''; // This will capture the scheme and domain
 
-		$url = str_replace($app_uploads_path, '', parse_url($url, PHP_URL_PATH));
-
-		$crop == false ? $crop = 0 : '';
-
-		// add query string for image resizing to the url
-		return $site_domain . '/images/width=' . $width . ',height=' . $height . ',crop=' . $crop . $url;
+	if (!$site_domain) {
+		return $url; // return the original URL if domain extraction fails
 	}
+
+	$app_uploads_path = apply_filters('base_image_app_uploads_path', 'app/uploads/');
+	$image_path = str_replace($app_uploads_path, '', parse_url($url, PHP_URL_PATH));
+
+	$crop = $crop ? 1 : 0; // Set crop to 1 if true, otherwise 0
+
+	// Build and return the URL with query string for resizing
+	return $site_domain . '/images/width=' . $width . ',height=' . $height . ',crop=' . $crop . $image_path;
 }
+
 
 /** 
  * 1. Replace imageUrl attribute with resized image url 
@@ -107,7 +110,6 @@ function replace_image_url_with_resized_url_and_add_srcset(
 		}
 
 		$crop == false ? $crop = 0 : '';
-
 	} else {
 		// Fallback to old logic if imageObject does not exist
 		$image_url = isset($attributes["imageUrl"]) ? $attributes["imageUrl"] : false;
