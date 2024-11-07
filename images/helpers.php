@@ -66,6 +66,9 @@ function add_resizing_settings_to_image_path($url, $width, $height, $crop) {
 	preg_match('#^(https?://[^/]+)#i', $url, $matches);
 	$site_domain = $matches[1] ?? ''; // This will capture the scheme and domain
 
+	// This filter allows overriding the site domain from the theme (eg. add subfolder)
+	$site_domain = apply_filters('base_image_site_domain', $site_domain);
+
 	if (!$site_domain) {
 		return $url; // return the original URL if domain extraction fails
 	}
