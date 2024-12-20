@@ -107,7 +107,6 @@ function replace_image_url_with_resized_url_and_add_srcset(
 		}
 
 		$crop == false ? $crop = 0 : '';
-
 	} else {
 		// Fallback to old logic if imageObject does not exist
 		$image_url = isset($attributes["imageUrl"]) ? $attributes["imageUrl"] : false;
@@ -174,7 +173,7 @@ function get_image_attributes(
 				) {
 					$height = ($image_original_height / $image_original_width) * $width;
 				} else {
-					$width = ($image_original_height / $image_original_width) * $image_original_height;
+					$width = ($image_original_height / $image_original_width) * $height;
 				}
 			}
 
