@@ -13,3 +13,6 @@ add_filter('intermediate_image_sizes_advanced', function ($sizes) {
 	unset($sizes['large']);
 	return $sizes;
 });
+
+//Disable auto image sizes by WP 6.7+
+add_filter('wp_img_tag_add_auto_sizes', '__return_false');
