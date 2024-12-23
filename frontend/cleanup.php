@@ -129,7 +129,7 @@ add_action('wp_enqueue_scripts', function () {
 add_action('init', function () {
 	$m = $GLOBALS['wp_scripts']->registered['jquery-migrate'] ?? null;
 
-	if ($m && isset($m->extra) && is_array($m->extra)) {
+	if ($m && isset($m->extra)) {
 		$m->extra['before'][] = 'temp_jm_logconsole = window.console.log; window.console.log=null;';
 		$m->extra['after'][] = 'window.console.log=temp_jm_logconsole;';
 	}
