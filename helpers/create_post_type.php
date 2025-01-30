@@ -32,6 +32,8 @@ function create_post_type(
 		'revisions',
 		'excerpt',
 	],
+	string|bool $template_lock = false,
+	array $template = []
 ): void {
 
 	if (empty($slug)) {
@@ -90,6 +92,8 @@ function create_post_type(
 			'show_in_rest' => $show_in_rest,
 			'exclude_from_search' => $exclude_from_search,
 			'supports' => $supports,
+			'template_lock' => $template_lock,
+			'template' => $template
 		]
 	);
 }
