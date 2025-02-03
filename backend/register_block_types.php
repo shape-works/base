@@ -2,20 +2,11 @@
 defined('ABSPATH') or die("No direct access");
 
 function get_block_paths(): array {
-	$base_dir = get_template_directory();
-	$primary_path = $base_dir . '/blocks';
-	$fallback_path = $base_dir . '/blocks-gutenberg';
-
-	// Check if 'blocks' exists, otherwise use 'blocks-gutenberg'
-	$block_dir = is_dir($primary_path) ? $primary_path : (is_dir($fallback_path) ? $fallback_path : null);
-
-	if (!$block_dir) {
-		return [];
-	}
-
 	return array_merge(
-		glob($block_dir . '/*/block.json') ?: [],
-		glob($block_dir . '/*/*/block.json') ?: []
+		glob(get_template_directory() . '/blocks/*/block.json'),
+		glob(get_template_directory() . '/blocks/*/*/block.json'),
+		glob(get_template_directory() . '/blocks-gutenberg/*/block.json'),
+		glob(get_template_directory() . '/blocks-gutenberg/*/*/block.json')
 	);
 }
 
