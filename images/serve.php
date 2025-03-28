@@ -23,11 +23,17 @@ add_action('init', function () {
 
 		// explode each "="-separated option string into a key/value pair
 		$options_key_value_array = array();
+
 		foreach ($options_string_array as $pair) {
-			list($key, $value) = explode("=", $pair);
-			// create array of the key/value pairs
-			array_key_exists($key, $options_key_value_array) ? '' : $options_key_value_array[$key] = $value;
+			$parts = explode("=", $pair, 2); // Limit to 2 parts
+			if (count($parts) === 2) {
+				list($key, $value) = $parts;
+				if (!array_key_exists($key, $options_key_value_array)) {
+					$options_key_value_array[$key] = $value;
+				}
+			}
 		}
+
 
 		// re-add "/app/uploads/" to the image url (minus "/images/width=3000...etc/")
 		$image_url_minus_options = str_replace("/images/" . $options_string . "/", "", $image_url);
