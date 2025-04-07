@@ -100,6 +100,11 @@ function replace_image_url_with_resized_url_and_add_srcset(
 		$image_url = $attributes[$attributeName]['url'];
 		$attachment_id = $attributes[$attributeName]['id'];
 
+		// Fallback: derive ID from image URL if not provided
+		if (!$attachment_id && !empty($attributes[$attributeName]['url'])) {
+			$attachment_id = attachment_url_to_postid($attributes[$attributeName]['url']);
+		}
+
 		if ($crop !== false && array_key_exists('crop', $attributes[$attributeName])) {
 			$imageCropPosition = $attributes[$attributeName]['crop'];
 			$imageCropPosition = str_replace(' ', '-', $imageCropPosition);
