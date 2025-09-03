@@ -115,7 +115,7 @@ add_action('init', function () {
 		$fly_image_url_parsed = parse_url($fly_image_url);
 
 		// construct the path to the Fly image
-		$trimmed_abspath = substr(ABSPATH, 0, -3); // trim 'wp/' subfolder from ABSPATH
+		$trimmed_abspath = IS_BEDROCK ? substr(ABSPATH, 0, -3) : ABSPATH; // trim 'wp/' subfolder from ABSPATH
 		$fly_image_path = $trimmed_abspath . $fly_image_url_parsed['path'];
 		$fly_image_path = apply_filters('base_fly_image_path', $fly_image_path);
 
