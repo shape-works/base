@@ -54,6 +54,10 @@ function paws_get_cropped_image_by_id($data) {
 
 function add_resizing_settings_to_image_path($url, $width, $height, $crop) {
 
+	if (!defined('IS_BEDROCK')) {
+		define('IS_BEDROCK', true);
+	}
+
 	$ext = pathinfo($url, PATHINFO_EXTENSION); // get file extension
 
 	if ($url == '') {
@@ -66,7 +70,9 @@ function add_resizing_settings_to_image_path($url, $width, $height, $crop) {
 		return $url;
 	} else {
 		$site_domain = get_home_url();
-		$app_uploads_path = apply_filters('base_image_app_uploads_path', 'app/uploads/');
+
+		$uploads_base = IS_BEDROCK ? 'app/uploads/' : 'wp-content/uploads/';
+		$app_uploads_path = apply_filters('base_image_app_uploads_path', $uploads_base);
 
 		$url = str_replace($app_uploads_path, '', parse_url($url, PHP_URL_PATH));
 

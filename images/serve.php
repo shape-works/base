@@ -6,6 +6,10 @@ defined('ABSPATH') or die("No direct access");
  */
 add_action('init', function () {
 
+	if (!defined('IS_BEDROCK')) {
+		define('IS_BEDROCK', true);
+	}
+
 	$rewrite_regex = apply_filters('base_image_regex', "~^\/images\/~");
 
 	if (preg_match($rewrite_regex, $_SERVER['REQUEST_URI'])) {
@@ -37,7 +41,8 @@ add_action('init', function () {
 
 		// re-add "/app/uploads/" to the image url (minus "/images/width=3000...etc/")
 		$image_url_minus_options = str_replace("/images/" . $options_string . "/", "", $image_url);
-		$image_directory_and_filename = "/app/uploads/" . $image_url_minus_options;
+		$uploads_base = IS_BEDROCK ? '/app/uploads/' : '/wp-content/uploads/';
+		$image_directory_and_filename = $uploads_base . $image_url_minus_options;
 
 		// reconstruct image url
 		$site_domain = apply_filters('base_image_site_domain', $_SERVER['HTTP_HOST']);
