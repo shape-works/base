@@ -2,14 +2,19 @@
 defined('ABSPATH') or die("No direct access");
 
 function get_block_paths(): array {
+	if (!defined('IS_CHILD_THEME')) {
+		define('IS_CHILD_THEME', is_child_theme());
+	}
+
+	$template_dir = IS_CHILD_THEME !== null && IS_CHILD_THEME ? get_stylesheet_directory() : get_template_directory();
+
 	return array_merge(
-		glob(get_template_directory() . '/blocks/*/block.json'),
-		glob(get_template_directory() . '/blocks/*/*/block.json'),
-		glob(get_template_directory() . '/blocks-gutenberg/*/block.json'),
-		glob(get_template_directory() . '/blocks-gutenberg/*/*/block.json')
+		glob($template_dir . '/blocks/*/block.json'),
+		glob($template_dir . '/blocks/*/*/block.json'),
+		glob($template_dir . '/blocks-gutenberg/*/block.json'),
+		glob($template_dir . '/blocks-gutenberg/*/*/block.json')
 	);
 }
-
 
 /**
  * Register blocks
