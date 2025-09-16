@@ -11,6 +11,9 @@ if (! defined('ABSPATH')) {
 	exit;
 }
 
+require_once __DIR__ . '/backend/unique-media/Cron.php';
+require_once __DIR__ . '/backend/unique-media/Job.php';
+
 if (! defined('UM_SIZE_META_KEY')) define('UM_SIZE_META_KEY', 'mdd_size');
 if (! defined('UM_HASH_META_KEY')) define('UM_HASH_META_KEY', 'mdd_hash');
 
