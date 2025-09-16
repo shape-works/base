@@ -347,3 +347,32 @@ add_action('wp_enqueue_media', function () {
 	wp_enqueue_script('unique-media-admin', $js_url, [], null, true);
 	wp_localize_script('unique-media-admin', 'unique_media_admin', []);
 });
+
+// Cron job to hash unhashed attachments in the background
+
+if (! defined('UM_HASH_CRON_HOOK')) {
+	define('UM_HASH_CRON_HOOK', 'um_unique_media_hash_attachments');
+}
+
+// 15-minute schedule
+add_filter('cron_schedules', function ($schedules) {
+	$schedules['um_every_15_minutes'] = array(
+		'interval' => 15 * 60,
+		'display'  => __('Every 15 minutes', 'wp-unique-media'),
+	);
+	return $schedules;
+});
+
+add_action(UM_HASH_CRON_HOOK, function () {
+	um_unique_media_hash_attachments(8);
+
+	if (empty(um_unique_media_get_unhashed_attachments())) {
+		wp_clear_scheduled_hook(UM_HASH_CRON_HOOK);
+	}
+});
+
+add_action('init', function () {
+	if (! wp_next_scheduled(UM_HASH_CRON_HOOK) && ! empty(um_unique_media_get_unhashed_attachments())) {
+		wp_schedule_event(time() + 60, 'um_every_15_minutes', UM_HASH_CRON_HOOK);
+	}
+});
