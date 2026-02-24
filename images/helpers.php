@@ -51,36 +51,55 @@ function paws_get_cropped_image_by_id($data) {
 /** 
  * Add path + options to image url 
  */
-
 function add_resizing_settings_to_image_path($url, $width, $height, $crop) {
 
 	if (!defined('IS_BEDROCK')) {
 		define('IS_BEDROCK', true);
 	}
 
-	$ext = pathinfo($url, PATHINFO_EXTENSION); // get file extension
+	$ext = pathinfo($url, PATHINFO_EXTENSION);
 
 	if ($url == '') {
-		// return if there was no image passed
 		return;
 	}
 
 	if ($ext == "svg") {
-		// leave url unchanged if it's an svg
 		return $url;
-	} else {
-		$site_domain = get_home_url();
-
-		$uploads_base = IS_BEDROCK ? 'app/uploads/' : 'wp-content/uploads/';
-		$app_uploads_path = apply_filters('base_image_app_uploads_path', $uploads_base);
-
-		$url = str_replace($app_uploads_path, '', parse_url($url, PHP_URL_PATH));
-
-		$crop == false ? $crop = 0 : '';
-
-		// add query string for image resizing to the url
-		return $site_domain . '/images/width=' . $width . ',height=' . $height . ',crop=' . $crop . $url;
 	}
+
+	$site_domain = get_home_url();
+
+	$uploads_base = IS_BEDROCK ? 'app/uploads/' : 'wp-content/uploads/';
+	$app_uploads_path = apply_filters('base_image_app_uploads_path', $uploads_base);
+
+	// Path of the original image URL (includes subdir if site is installed in one)
+	$path = (string) parse_url($url, PHP_URL_PATH);
+
+	// Remove uploads base segment
+	$path = str_replace($app_uploads_path, '', $path);
+
+
+	$site_path = (string) parse_url($site_domain, PHP_URL_PATH); // e.g. "/six-two" or ""
+	if ($site_path && $site_path !== '/') {
+		// ensure it has no trailing slash for consistent matching
+		$site_path = rtrim($site_path, '/');
+
+		// remove it only if it's at the start
+		if (strpos($path, $site_path . '/') === 0) {
+			$path = substr($path, strlen($site_path));
+		} elseif ($path === $site_path) {
+			$path = '';
+		}
+	}
+
+	// Ensure leading slash so concatenation is consistent
+	if ($path === '' || $path[0] !== '/') {
+		$path = '/' . ltrim($path, '/');
+	}
+
+	$crop == false ? $crop = 0 : '';
+
+	return $site_domain . '/images/width=' . $width . ',height=' . $height . ',crop=' . $crop . $path;
 }
 
 /** 
