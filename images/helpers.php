@@ -75,11 +75,20 @@ function add_resizing_settings_to_image_path($url, $width, $height, $crop) {
 		$app_uploads_path = apply_filters('base_image_app_uploads_path', $uploads_base);
 
 		$url = str_replace($app_uploads_path, '', parse_url($url, PHP_URL_PATH));
+		$url = ltrim($url, '/');
+
+		// strip subdir if it accidentally appears
+		$home_path = rtrim(parse_url(home_url('/'), PHP_URL_PATH), '/'); // '' or '/six-two'
+		if (!empty($home_path)) {
+			$hp = ltrim($home_path, '/'); // 'six-two'
+			if (strpos($url, $hp . '/') === 0) {
+				$url = substr($url, strlen($hp) + 1);
+			}
+		}
 
 		$crop == false ? $crop = 0 : '';
 
-		// add query string for image resizing to the url
-		return $site_domain . '/images/width=' . $width . ',height=' . $height . ',crop=' . $crop . $url;
+		return home_url('/images/width=' . $width . ',height=' . $height . ',crop=' . $crop . '/' . $url);
 	}
 }
 
