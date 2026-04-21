@@ -158,7 +158,7 @@ function replace_image_url_with_resized_url_and_add_srcset(
  */
 
 function get_image_attributes(
-	int $attachment_id = null,
+	?int $attachment_id = null,
 	int $width,
 	int $height,
 	string $class = '',
