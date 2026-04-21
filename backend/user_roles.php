@@ -54,11 +54,6 @@ add_action('init', function () {
 });
 
 /*
-* Change the default role to our new one
-*/
-add_filter('pre_option_default_role', fn () => 'site_admin');
-
-/*
 * Remove 'Administrator' from the list of roles if the current user is not an admin
 */
 add_filter('editable_roles', function ($roles) {
