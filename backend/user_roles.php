@@ -56,7 +56,9 @@ add_action('init', function () {
 /*
 * Change the default role to our new one
 */
-add_filter('pre_option_default_role', fn () => 'site_admin');
+add_filter('pre_option_default_role', function () {
+	return apply_filters('base_default_role', 'subscriber');
+});
 
 /*
 * Remove 'Administrator' from the list of roles if the current user is not an admin
