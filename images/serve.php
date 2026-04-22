@@ -97,8 +97,16 @@ add_action('init', function () {
 
 
 		// get width, height & crop values
-		$width = array_key_exists('width', $options_key_value_array) ? $options_key_value_array['width'] : 0;
-		$height = array_key_exists('height', $options_key_value_array) ? $options_key_value_array['height'] : 0;
+		$max_dimension = absint(apply_filters('base_image_max_dimension', 4000));
+		$max_dimension = $max_dimension > 0 ? $max_dimension : 4000;
+		$width = min(
+			absint(array_key_exists('width', $options_key_value_array) ? $options_key_value_array['width'] : 0),
+			$max_dimension
+		);
+		$height = min(
+			absint(array_key_exists('height', $options_key_value_array) ? $options_key_value_array['height'] : 0),
+			$max_dimension
+		);
 		$crop = false;
 
 		if (array_key_exists('crop', $options_key_value_array)) {
