@@ -140,12 +140,93 @@ add_action('init', function () {
 		$fly_image_path = $trimmed_abspath . $fly_path;
 		$fly_image_path = apply_filters('base_fly_image_path', $fly_image_path);
 
-		$type = mime_content_type($fly_image_path);
+		/**
+		 * Automatically serve WebP if browser supports it
+		 * and USE_WEBP env variable is enabled
+		 */
+		$use_webp = false;
+
+		if (function_exists('env')) {
+			$use_webp = env('USE_WEBP', false);
+		} else {
+			$use_webp = getenv('USE_WEBP');
+		}
+
+		$use_webp = filter_var($use_webp, FILTER_VALIDATE_BOOLEAN);
+
+		$serve_path = $fly_image_path;
+
+		if ($use_webp) {
+
+			$accept_header = $_SERVER['HTTP_ACCEPT'] ?? '';
+
+			$supports_webp = strpos($accept_header, 'image/webp') !== false;
+
+			$can_generate_webp =
+				class_exists('Imagick') &&
+				in_array('WEBP', Imagick::queryFormats(), true);
+
+			if (
+				$supports_webp &&
+				$can_generate_webp &&
+				file_exists($fly_image_path) &&
+				in_array(
+					strtolower(pathinfo($fly_image_path, PATHINFO_EXTENSION)),
+					['jpg', 'jpeg', 'png'],
+					true
+				)
+			) {
+
+				$webp_path =
+					preg_replace('/\.[^.]+$/', '', $fly_image_path)
+					. '.webp';
+
+				// Generate once and cache forever
+				if (!file_exists($webp_path)) {
+
+					try {
+
+						$image = new Imagick($fly_image_path);
+
+						$image->setImageFormat('webp');
+
+						// Good balance for quality/performance
+						$image->setImageCompressionQuality(82);
+
+						$image->writeImage($webp_path);
+
+						$image->clear();
+						$image->destroy();
+
+					} catch (Exception $e) {
+						$webp_path = '';
+					}
+				}
+
+				// Serve WebP if generated
+				if (!empty($webp_path) && file_exists($webp_path)) {
+					$serve_path = $webp_path;
+				}
+			}
+		}
+
+		$type = mime_content_type($serve_path);
 
 		header('Content-Type:' . $type);
 		header('Expires: ' . gmdate('D, d M Y H:i:s \G\M\T', time() + (60 * 60 * 24 * 365 * 10))); // 10 years
+		header('Cache-Control: public, max-age=315360000');
 
-		readfile($fly_image_path);
+		/**
+		 * Different cache bucket depending on browser support
+		 */
+		header('Vary: Accept');
+
+		if (!file_exists($serve_path)) {
+			status_header(404);
+			exit;
+		}
+
+		readfile($serve_path);
 		//output the file stream
 
 		exit;
