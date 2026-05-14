@@ -181,8 +181,13 @@ add_action('init', function () {
 					preg_replace('/\.[^.]+$/', '', $fly_image_path)
 					. '.webp';
 
-				// Generate once and cache forever
-				if (!file_exists($webp_path)) {
+				// Generate WebP if missing or outdated
+				$should_generate_webp =
+					!file_exists($webp_path)
+					||
+					filemtime($fly_image_path) > filemtime($webp_path);
+
+				if ($should_generate_webp) {
 
 					try {
 
