@@ -15,4 +15,4 @@ require_once(dirname(__FILE__) . '/force_permalink_structure.php');
 require_once(dirname(__FILE__) . '/login_redirect.php');
 require_once(dirname(__FILE__) . '/custom_login.php');
 require_once(dirname(__FILE__) . '/unique-media/unique-media.php');
-require_once(dirname(__FILE__) . '/link_blocks_verification/link_blocks_verification.php');
+require_once(dirname(__FILE__) . '/link_blocks_verification.php');
