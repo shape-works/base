@@ -215,6 +215,20 @@ add_action('init', function () {
 			}
 		}
 
+		if (!file_exists($serve_path)) {
+
+			status_header(404);
+
+			/**
+			 * Prevent stale cached 404 responses
+			 */
+			header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
+			header('Pragma: no-cache');
+			header('Expires: 0');
+
+			exit;
+		}
+
 		$type = mime_content_type($serve_path);
 
 		header('Content-Type:' . $type);
@@ -225,11 +239,6 @@ add_action('init', function () {
 		 * Different cache bucket depending on browser support
 		 */
 		header('Vary: Accept');
-
-		if (!file_exists($serve_path)) {
-			status_header(404);
-			exit;
-		}
 
 		readfile($serve_path);
 		//output the file stream
