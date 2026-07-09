@@ -38,6 +38,7 @@ add_action('init', function () {
 			'create_users',
 			'promote_users',
 			'manage_privacy_options',
+			'manage_options'
 		);
 
 		// Add all the capabilities by looping through them
