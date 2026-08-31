@@ -86,10 +86,36 @@ function add_resizing_settings_to_image_path($url, $width, $height, $crop) {
 			}
 		}
 
-		$crop == false ? $crop = 0 : '';
+		$crop = paws_sanitize_image_crop($crop);
 
 		return home_url('/images/width=' . $width . ',height=' . $height . ',crop=' . $crop . '/' . $url);
 	}
+}
+
+function paws_sanitize_image_crop($crop) {
+	if ($crop === false || $crop === '' || $crop === null || $crop === 0 || $crop === '0') {
+		return 0;
+	}
+
+	$normalized_crop = strtolower(str_replace(' ', '-', trim((string) $crop)));
+	$allowed_crop_positions = array(
+		'center',
+		'left',
+		'right',
+		'top',
+		'bottom',
+		'left-top',
+		'left-center',
+		'left-bottom',
+		'center-top',
+		'center-center',
+		'center-bottom',
+		'right-top',
+		'right-center',
+		'right-bottom',
+	);
+
+	return in_array($normalized_crop, $allowed_crop_positions, true) ? $normalized_crop : 0;
 }
 
 /** 
@@ -121,12 +147,10 @@ function replace_image_url_with_resized_url_and_add_srcset(
 		}
 
 		if ($crop !== false && array_key_exists('crop', $attributes[$attributeName])) {
-			$imageCropPosition = $attributes[$attributeName]['crop'];
-			$imageCropPosition = str_replace(' ', '-', $imageCropPosition);
-			$crop = $imageCropPosition;
+			$crop = paws_sanitize_image_crop($attributes[$attributeName]['crop']);
 		}
 
-		$crop == false ? $crop = 0 : '';
+		$crop = paws_sanitize_image_crop($crop);
 	} else {
 		// Fallback to old logic if imageObject does not exist
 		$image_url = isset($attributes["imageUrl"]) ? $attributes["imageUrl"] : false;
@@ -198,14 +222,14 @@ function get_image_attributes(
 			}
 
 			$image_attributes = '
-				src="' . $resized_image_url . '" 
-				srcset="' . $srcset . '"
-				width="' . $width . '"
-				height="' . $height . '"
-				alt="' . $image_alt . '"';
-			$lazy_load == true ? $image_attributes .= 'loading="lazy"' : '';
-			$sizes ? $image_attributes .= 'sizes="' . $sizes . '"' : '';
-			$class ? $image_attributes .= 'class="' . $class . '"' : '';
+				src="' . esc_url($resized_image_url) . '" 
+				srcset="' . esc_attr($srcset) . '"
+				width="' . esc_attr($width) . '"
+				height="' . esc_attr($height) . '"
+				alt="' . esc_attr($image_alt) . '"';
+			$lazy_load == true ? $image_attributes .= ' loading="lazy"' : '';
+			$sizes ? $image_attributes .= ' sizes="' . esc_attr($sizes) . '"' : '';
+			$class ? $image_attributes .= ' class="' . esc_attr($class) . '"' : '';
 
 			return $image_attributes;
 		}
