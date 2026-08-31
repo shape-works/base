@@ -27,7 +27,7 @@ function paws_get_image($attachment_id, $size, $crop, $attr) {
  * REST endpoint for getting cropped images in the block editor
  */
 add_action('rest_api_init', function () {
-	register_rest_route('paws/v1', '/get-resized-image-by-id/(?Pid\d+)', array(
+	register_rest_route('paws/v1', '/get-resized-image-by-id/(?P<id>\d+)', array(
 		'methods' => 'GET',
 		'callback' => 'paws_get_cropped_image_by_id',
 		'permission_callback' => function () {
